@@ -1,5 +1,5 @@
 import wretch, { Wretch, WretchError } from "wretch";
-import { AuthActions } from "./auth/utils";
+import { AuthActions } from "./utils";
 import { error } from "console";
 
 // Extrae las funciones necesarias de la utilidad AuthActions

@@ -1,11 +1,12 @@
-import React, { use } from "react";
+"use client";
+
 import { useForm } from "react-hook-form";
-import { AuthActions } from "../auth/utils";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { AuthActions } from "../utils";
+import { useState } from "react";
 
 type FormData = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -16,35 +17,26 @@ const Login = () => {
     formState: { errors },
     setError,
   } = useForm<FormData>();
-
   const router = useRouter();
-
   const { login, storeToken } = AuthActions();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data: FormData) => {
-    login(data.email, data.password)
+    login(data.username, data.password)
       .json((json) => {
         storeToken(json.access, "access");
         storeToken(json.refresh, "refresh");
         router.push("/dashboard");
       })
       .catch((err) => {
-        console.log("Error status:", err.status);
-        console.log("Error object:", err);
-
-        // El mensaje ya está en err.message como JSON string
         let errorMessage = "Login failed";
-
         try {
-          // Parsear el mensaje JSON que viene en err.message
           const parsedError = JSON.parse(err.message);
           errorMessage =
             parsedError.detail || parsedError.message || "Invalid credentials";
         } catch {
-          // Si no se puede parsear, usar mensaje genérico
-          errorMessage = "Invalid email or password";
+          errorMessage = "Invalid username or password";
         }
-
         setError("root", {
           type: "manual",
           message: errorMessage,
@@ -52,55 +44,120 @@ const Login = () => {
       });
   };
 
+  const handleResetPassword = () => {
+    router.push("/auth/password/reset-password");
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg w-1/3">
-        <h3 className="text-2xl font-semibold">Login to your account</h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-          <div>
-            <label className="block" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="text"
-              placeholder="Email"
-              {...register("email", { required: true })}
-              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
-            />
-            {errors.email && (
-              <span className="text-xs text-red-600">Email is required</span>
-            )}
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-surface-light p-6 sm:p-12">
+        <div className="flex flex-col w-full max-w-md">
+          <div className="mb-6 flex w-full justify-center mb-8 ">
+            <div className="h-10 w-10">
+              <span className="material-symbols-outlined !text-[60px]">
+                shield_with_heart
+              </span>
+            </div>
           </div>
-          <div className="mt-4">
-            <label className="block" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password", { required: true })}
-              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
-            />
-            {errors.password && (
-              <span className="text-xs text-red-600">Password is required</span>
-            )}
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <button className="px-12 py-2 leading-5 text-white transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
-              Login
-            </button>
-          </div>
-          {errors.root && (
-            <span className="text-xs text-red-600">{errors.root.message}</span>
-          )}
-        </form>
-        <div className="mt-6 text-center">
-          <Link
-            href="/auth/password/reset-password"
-            className="text-sm text-blue-600 hover:underline"
+          <h1 className="text-text-primary tracking-tight text-3xl font-bold leading-tight text-center pb-4">
+            Centro Psicológico Atrévete
+          </h1>
+
+          <p className="text-text-secondary text-base font-normal leading-normal text-center pb-8">
+            Ingresa tus credenciales para acceder a tu cuenta.
+          </p>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+            autoComplete="off"
           >
-            Forgot your password?
-          </Link>
+            {/* Username Field */}
+            <div className="flex flex-wrap items-end gap-4">
+              <label className="flex flex-col min-w-40 flex-1">
+                <p className="text-text-primary text-sm font-medium leading-normal pb-2">
+                  Nombre de usuario
+                </p>
+                <input
+                  {...register("username", { required: true })}
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal"
+                  placeholder="Ingresa tu nombre de usuario"
+                />
+                {errors.username && (
+                  <span className="text-xs text-red-600 mt-1">
+                    El nombre de usuario es requerido
+                  </span>
+                )}
+              </label>
+            </div>
+
+            {/* Password Field */}
+            <div className="flex flex-wrap items-end gap-4">
+              <label className="flex flex-col min-w-40 flex-1">
+                <div className="flex justify-between items-baseline">
+                  <p className="text-text-primary text-sm font-medium leading-normal pb-2">
+                    Contraseña
+                  </p>
+                  <a
+                    className="text-primary text-sm font-medium leading-normal underline hover:text-blue-400 transition-colors"
+                    onClick={handleResetPassword}
+                  >
+                    Olvidé mi contraseña
+                  </a>
+                </div>
+                <div className="relative flex w-full flex-1 items-stretch rounded-lg">
+                  <input
+                    {...register("password", { required: true })}
+                    type={showPassword ? "text" : "password"}
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal pr-12"
+                    placeholder="Ingresa tu contraseña"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Toggle password visibility"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-secondary"
+                  >
+                    <span className="material-symbols-outlined">
+                      {showPassword ? "visibility" : "visibility_off"}
+                    </span>
+                  </button>
+                </div>
+                {errors.password && (
+                  <span className="text-xs text-red-600 mt-1">
+                    La contraseña es requerida
+                  </span>
+                )}
+              </label>
+            </div>
+
+            {/* Error Message */}
+            {errors.root && (
+              <span className="text-xs text-red-600 text-center">
+                {errors.root.message}
+              </span>
+            )}
+
+            {/* Submit Button */}
+            <div className="flex py-6 justify-center">
+              <button
+                type="submit"
+                className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-black text-white text-base font-bold leading-normal tracking-[0.015em] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
+              >
+                <span className="truncate">Iniciar Sesión</span>
+              </button>
+            </div>
+          </form>
+
+          <p className="text-text-secondary text-sm font-normal leading-normal text-center">
+            ¿No tienes una cuenta?{" "}
+            <a
+              className="font-medium text-primary underline hover:text-blue-400 transition-colors"
+              href="/auth/register"
+            >
+              Regístrate
+            </a>
+          </p>
         </div>
       </div>
     </div>

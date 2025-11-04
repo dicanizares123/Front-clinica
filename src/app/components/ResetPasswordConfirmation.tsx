@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthActions } from "../auth/utils";
+import { AuthActions } from "../utils";
 import { useSearchParams, useRouter } from "next/navigation";
 
 type FormData = {

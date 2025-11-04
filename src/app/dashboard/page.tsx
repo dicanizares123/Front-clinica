@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 import { fetcher } from "../../app/fetcher";
-import { AuthActions } from "../auth/utils";
+import { AuthActions } from "../utils";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
