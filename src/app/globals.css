@@ -2,12 +2,14 @@
 
 @theme {
   --color-primary: #000000;
-
   --color-background-light: #f7f7f7;
-
   --color-surface-light: #ffffff;
   --color-text-primary: #1e293b;
   --color-text-secondary: #64748b;
+  --card-light: #ffffff;
+  --text-light: #111418;
+  --text-secondary-light: #617589;
+  --border-light: #e5e7eb;
 }
 
 @layer utilities {
@@ -27,6 +29,19 @@
   }
   .text-secondary {
     color: var(--color-text-secondary);
+  }
+
+  .border-light {
+    border-color: var(--border-light);
+  }
+  .card-light {
+    background-color: var(--card-light);
+  }
+  .text-light {
+    color: var(--text-light);
+  }
+  .text-secondary-light {
+    color: var(--text-secondary-light);
   }
 }
 
