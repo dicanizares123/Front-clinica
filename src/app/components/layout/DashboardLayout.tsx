@@ -1,17 +1,25 @@
+"use client";
+
 import Sidebar from "./Sidebar";
-import Header from "./Header";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
+  user?: {
+    username: string;
+    email: string;
+    role?: string;
+  };
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DashboardLayout({
+  children,
+  user,
+}: DashboardLayoutProps) {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+    <div className="bg-background-light font-display">
+      <div className="relative flex h-auto min-h-screen w-full flex-row">
+        <Sidebar user={user} />
+        <main className="flex-1 p-8">{children}</main>
       </div>
     </div>
   );

@@ -67,7 +67,7 @@ const resetPasswordConfirm = (
 ) => {
   return api.post(
     { uid, token, new_password, re_new_password },
-    "auth/users/reset_password_confirm/"
+    "/auth/users/reset_password_confirm/"
   );
 };
 

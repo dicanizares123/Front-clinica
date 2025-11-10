@@ -149,7 +149,7 @@ const Login = () => {
             </div>
           </form>
 
-          <p className="text-text-secondary text-sm font-normal leading-normal text-center">
+          {/* <p className="text-text-secondary text-sm font-normal leading-normal text-center">
             ¿No tienes una cuenta?{" "}
             <a
               className="font-medium text-primary underline hover:text-blue-400 transition-colors"
@@ -157,7 +157,7 @@ const Login = () => {
             >
               Regístrate
             </a>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
