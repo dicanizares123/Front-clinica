@@ -3,7 +3,10 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { AuthActions } from "../utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { fetcher } from "../fetcher";
+import Cookies from "js-cookie";
 
 type FormData = {
   username: string;
@@ -20,6 +23,13 @@ const Login = () => {
   const router = useRouter();
   const { login, storeToken } = AuthActions();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const accessToken = Cookies.get("accessToken");
+    if (accessToken) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   const onSubmit = (data: FormData) => {
     login(data.username, data.password)

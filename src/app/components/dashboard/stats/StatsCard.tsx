@@ -8,10 +8,10 @@ interface StatsCardProps {
 }
 
 const colorClasses = {
-  blue: "bg-blue-100 dark:bg-blue-500/20 text-blue-500",
-  green: "bg-green-100 dark:bg-green-500/20 text-green-500",
-  purple: "bg-purple-100 dark:bg-purple-500/20 text-purple-500",
-  orange: "bg-orange-100 dark:bg-orange-500/20 text-orange-500",
+  blue: "bg-blue-100 text-blue-500",
+  green: "bg-green-100 text-green-500",
+  purple: "bg-purple-100 text-purple-500",
+  orange: "bg-orange-100 text-orange-500",
 };
 
 export default function StatsCard({
@@ -21,7 +21,7 @@ export default function StatsCard({
   color,
 }: StatsCardProps) {
   return (
-    <div className="bg-card-light dark:bg-card-dark p-4 rounded-xl shadow-2xl flex items-center gap-4">
+    <div className="bg-card-light dark:bg-card-dark p-4 rounded-xl shadow-xl flex items-center gap-4">
       <div className={`${colorClasses[color]} rounded-full p-3`}>
         <span className="material-symbols-outlined">{icon}</span>
       </div>

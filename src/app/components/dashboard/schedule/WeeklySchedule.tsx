@@ -1,153 +1,252 @@
 "use client";
 
-import { useState } from "react";
+import { Calendar, momentLocalizer, Event } from "react-big-calendar";
+import moment from "moment";
+import "moment/locale/es";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./calendar-custom.css";
+import { useState, useCallback } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/app/fetcher";
 
-interface ScheduleEvent {
+// Configurar moment en español
+moment.locale("es");
+const localizer = momentLocalizer(moment);
+
+interface AppointmentEvent extends Event {
   id: number;
-  day: number; // 0-6 (Lunes-Domingo)
-  hour: number; // 7-23 (7am-11pm)
   title: string;
-  type: "success" | "primary" | "warning";
+  start: Date;
+  end: Date;
+  type: "consultation" | "therapy" | "emergency";
+  patient?: string;
+  doctor?: string;
 }
 
 interface WeeklyScheduleProps {
-  events?: ScheduleEvent[];
+  events?: AppointmentEvent[];
 }
 
-const eventColors = {
-  success: "bg-green-500/20 text-green-700 dark:text-green-300",
-  primary: "bg-primary/20 text-primary",
-  warning: "bg-orange-500/20 text-orange-700 dark:text-orange-300",
-};
-
 export default function WeeklySchedule({ events }: WeeklyScheduleProps) {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // Integración con backend - descomenta cuando esté listo
+  // const { data: backendAppointments, mutate } = useSWR('/api/appointments', fetcher);
 
-  // Datos de prueba
-  const scheduleEvents = events || [
-    {
-      id: 1,
-      day: 0,
-      hour: 9,
-      title: "Reunión equipo",
-      type: "success" as const,
-    },
-    { id: 2, day: 2, hour: 10, title: "Entrevista", type: "primary" as const },
-    { id: 3, day: 2, hour: 11, title: "Deploy", type: "warning" as const },
-    {
-      id: 4,
-      day: 4,
-      hour: 14,
-      title: "Sprint Planning",
-      type: "success" as const,
-    },
-  ];
+  // Datos de prueba mientras no hay backend
+  const [appointments] = useState<AppointmentEvent[]>(
+    events || [
+      {
+        id: 1,
+        title: "Consulta - Juan Pérez",
+        start: new Date(2025, 10, 10, 9, 0),
+        end: new Date(2025, 10, 10, 10, 0),
+        type: "consultation",
+        patient: "Juan Pérez",
+        doctor: "Dr. García",
+      },
+      {
+        id: 2,
+        title: "Terapia Grupal",
+        start: new Date(2025, 10, 11, 14, 0),
+        end: new Date(2025, 10, 11, 16, 0),
+        type: "therapy",
+        doctor: "Dra. Martínez",
+      },
+      {
+        id: 3,
+        title: "Emergencia - María López",
+        start: new Date(2025, 10, 12, 11, 0),
+        end: new Date(2025, 10, 12, 12, 0),
+        type: "emergency",
+        patient: "María López",
+        doctor: "Dr. Rodríguez",
+      },
+      {
+        id: 4,
+        title: "Consulta - Carlos Ruiz",
+        start: new Date(2025, 10, 13, 16, 0),
+        end: new Date(2025, 10, 13, 17, 0),
+        type: "consultation",
+        patient: "Carlos Ruiz",
+        doctor: "Dr. García",
+      },
+      {
+        id: 5,
+        title: "Terapia Individual - Ana Silva",
+        start: new Date(2025, 10, 14, 10, 0),
+        end: new Date(2025, 10, 14, 11, 30),
+        type: "therapy",
+        patient: "Ana Silva",
+        doctor: "Dra. Martínez",
+      },
+    ]
+  );
 
-  const days = [
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-    "Domingo",
-  ];
-  const hours = Array.from({ length: 17 }, (_, i) => i + 7); // 7am a 11pm
+  // Estilos personalizados por tipo de evento
+  const eventStyleGetter = (event: AppointmentEvent) => {
+    const colors = {
+      consultation: {
+        backgroundColor: "#10b981",
+        borderLeft: "4px solid #059669",
+      },
+      therapy: {
+        backgroundColor: "#3b82f6",
+        borderLeft: "4px solid #2563eb",
+      },
+      emergency: {
+        backgroundColor: "#ef4444",
+        borderLeft: "4px solid #dc2626",
+      },
+    };
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
+    return {
+      style: {
+        ...colors[event.type],
+        color: "white",
+        borderRadius: "4px",
+        padding: "4px 8px",
+        fontSize: "13px",
+      },
+    };
   };
 
-  const changeWeek = (direction: number) => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + direction * 7);
-    setSelectedDate(newDate);
-  };
+  // Handler para crear nueva cita (al seleccionar un slot)
+  const handleSelectSlot = useCallback(
+    async (slotInfo: { start: Date; end: Date; action: string }) => {
+      console.log("handleSelectSlot llamado", slotInfo);
+      const title = prompt("Ingrese el título de la cita:");
+      if (!title) return;
+
+      const newAppointment = {
+        title,
+        start: slotInfo.start.toISOString(),
+        end: slotInfo.end.toISOString(),
+        type: "consultation",
+        patient: "Paciente nuevo",
+        doctor: "Por asignar",
+      };
+
+      console.log("Nueva cita a crear:", newAppointment);
+
+      // Cuando tengas el backend listo, descomenta esto:
+      /*
+    try {
+      await fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newAppointment),
+      });
+      
+      // Revalidar datos
+      mutate();
+      
+      alert('Cita creada exitosamente');
+    } catch (error) {
+      console.error('Error al crear cita:', error);
+      alert('Error al crear la cita');
+    }
+    */
+
+      alert(
+        `Cita creada (modo prueba):\n\n${title}\n${slotInfo.start.toLocaleString()} - ${slotInfo.end.toLocaleString()}\n\nCuando el backend esté listo, esto se guardará en la base de datos.`
+      );
+    },
+    []
+  );
+
+  // Handler para ver/editar cita existente
+  const handleSelectEvent = useCallback((event: AppointmentEvent) => {
+    console.log("Evento seleccionado:", event);
+
+    const details = `
+Cita: ${event.title}
+Paciente: ${event.patient || "N/A"}
+Doctor: ${event.doctor || "N/A"}
+Tipo: ${event.type}
+Inicio: ${event.start.toLocaleString()}
+Fin: ${event.end.toLocaleString()}
+    `.trim();
+
+    alert(details);
+
+    // Cuando tengas el backend listo, aquí puedes abrir un modal
+    // para editar o eliminar la cita
+  }, []);
 
   return (
-    <div className="col-span-3 bg-card-light dark:bg-card-dark p-6 rounded-xl shadow-2xl">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em]">
-          Horario de la Semana
-        </h2>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-            {formatDate(selectedDate)}
-          </span>
-          <div className="flex gap-2">
-            <button
-              onClick={() => changeWeek(-1)}
-              className="p-2 rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors"
-              aria-label="Semana anterior"
-            >
-              <span className="material-symbols-outlined">chevron_left</span>
-            </button>
-            <button
-              onClick={() => changeWeek(1)}
-              className="p-2 rounded-lg hover:bg-background-light dark:hover:bg-background-dark transition-colors"
-              aria-label="Semana siguiente"
-            >
-              <span className="material-symbols-outlined">chevron_right</span>
-            </button>
-          </div>
-        </div>
+    <div className="col-span-3 bg-white p-6 rounded-xl shadow-2xl">
+      <h2 className="text-gray-900 dark:text-white text-lg font-bold mb-4">
+        Horario de la Semana
+      </h2>
+
+      <div style={{ height: "700px" }}>
+        <Calendar
+          localizer={localizer}
+          events={appointments}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: "100%" }}
+          // Configuración de vista
+          defaultView="week"
+          views={["month", "week", "day", "agenda"]}
+          // Horario de trabajo
+          min={new Date(0, 0, 0, 7, 0)} // 7am
+          max={new Date(0, 0, 0, 23, 0)} // 11pm
+          // Paso de tiempo en minutos
+          step={30}
+          timeslots={2}
+          // Interactividad
+          selectable
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          // Estilos personalizados
+          eventPropGetter={eventStyleGetter}
+          // Formato de fecha/hora
+          formats={{
+            timeGutterFormat: "HH:mm",
+            eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+              `${localizer?.format(
+                start,
+                "HH:mm",
+                culture
+              )} - ${localizer?.format(end, "HH:mm", culture)}`,
+            agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
+              `${localizer?.format(
+                start,
+                "HH:mm",
+                culture
+              )} - ${localizer?.format(end, "HH:mm", culture)}`,
+          }}
+          // Mensajes en español
+          messages={{
+            next: "Siguiente",
+            previous: "Anterior",
+            today: "Hoy",
+            month: "Mes",
+            week: "Semana",
+            day: "Día",
+            agenda: "Agenda",
+            date: "Fecha",
+            time: "Hora",
+            event: "Evento",
+            noEventsInRange: "No hay eventos en este rango",
+            showMore: (total) => `+ Ver más (${total})`,
+          }}
+        />
       </div>
 
-      <div className="overflow-x-auto">
-        <div className="min-w-[1000px]">
-          <div className="grid grid-cols-8 border-t border-l border-border-light rounded-t-lg">
-            {/* Encabezado con columna de horas */}
-            <div className="text-center py-3 border-b border-r border-border-light text-sm font-medium bg-background-light dark:bg-background-dark">
-              Hora
-            </div>
-            {days.map((day) => (
-              <div
-                key={day}
-                className="text-center py-3 border-b border-r border-border-light text-sm font-medium bg-background-light dark:bg-background-dark"
-              >
-                {day}
-              </div>
-            ))}
-
-            {/* Filas por cada hora */}
-            {hours.map((hour) => (
-              <div key={hour} className="contents">
-                {/* Columna de hora */}
-                <div className="text-center py-3 border-b border-r border-border-light text-sm text-text-secondary-light dark:text-text-secondary-dark bg-background-light/50 dark:bg-background-dark/50 font-medium">
-                  {hour}:00
-                </div>
-
-                {/* Celdas para cada día */}
-                {days.map((_, dayIndex) => {
-                  const dayEvents = scheduleEvents.filter(
-                    (event) => event.day === dayIndex && event.hour === hour
-                  );
-
-                  return (
-                    <div
-                      key={`${hour}-${dayIndex}`}
-                      className="p-2 border-b border-r border-border-light dark:border-border-dark min-h-[70px] relative hover:bg-background-light/50 dark:hover:bg-background-dark/50 transition-colors cursor-pointer"
-                    >
-                      {dayEvents.map((event) => (
-                        <div
-                          key={event.id}
-                          className={`${
-                            eventColors[event.type]
-                          } p-2 rounded-md text-xs mb-1 font-medium`}
-                        >
-                          {event.title}
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
+      {/* Leyenda */}
+      <div className="mt-4 flex gap-4 text-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-green-500 rounded"></div>
+          <span className="text-gray-700 dark:text-gray-300">Consulta</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-blue-500 rounded"></div>
+          <span className="text-gray-700 dark:text-gray-300">Terapia</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-red-500 rounded"></div>
+          <span className="text-gray-700 dark:text-gray-300">Emergencia</span>
         </div>
       </div>
     </div>
