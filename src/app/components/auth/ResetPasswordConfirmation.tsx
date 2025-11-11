@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthActions } from "../utils";
+import { AuthActions } from "../../utils";
 import { useSearchParams, useRouter } from "next/navigation";
+import Button from "../shared/Button";
 
 type FormData = {
   password: string;
@@ -79,12 +80,7 @@ const ResetPasswordConfirmation = () => {
               <span className="text-xs text-red-600">Password is required</span>
             )}
             <div className="flex py-6 justify-center">
-              <button
-                type="submit"
-                className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-black text-white text-base font-bold leading-normal tracking-[0.015em] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
-              >
-                <span className="truncate">Cambiar contraseña</span>
-              </button>
+              <Button textButton="Cambiar contraseña" type="submit" />
             </div>
           </form>
           <p className="text-text-secondary text-sm font-normal leading-normal text-center">

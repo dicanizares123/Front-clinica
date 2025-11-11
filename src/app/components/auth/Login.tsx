@@ -2,12 +2,12 @@
 
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { AuthActions } from "../utils";
+import { AuthActions } from "../../utils";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { fetcher } from "../fetcher";
+import { fetcher } from "../../fetcher";
 import Cookies from "js-cookie";
-
+import Button from "../shared/Button";
 type FormData = {
   username: string;
   password: string;
@@ -150,12 +150,7 @@ const Login = () => {
 
             {/* Submit Button */}
             <div className="flex py-6 justify-center">
-              <button
-                type="submit"
-                className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-black text-white text-base font-bold leading-normal tracking-[0.015em] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
-              >
-                <span className="truncate">Iniciar Sesión</span>
-              </button>
+              <Button textButton="Iniciar Sesión" type="submit" />
             </div>
           </form>
 

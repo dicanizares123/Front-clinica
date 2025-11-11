@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { AuthActions } from "../utils";
+import { AuthActions } from "../../utils";
+import Button from "../shared/Button";
 
 type FormData = {
   email: string;
@@ -93,12 +94,10 @@ const ResetPassword = () => {
 
             {/* Submit Button */}
             <div className="flex py-6 justify-center">
-              <button
+              <Button
+                textButton="Enviar Enlace de Recuperación"
                 type="submit"
-                className="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-black text-white text-base font-bold leading-normal tracking-[0.015em] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
-              >
-                <span className="truncate">Enviar Enlace de Recuperación</span>
-              </button>
+              />
             </div>
           </form>
 

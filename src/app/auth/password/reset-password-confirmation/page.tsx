@@ -1,6 +1,6 @@
 "use client";
 
-import ResetPasswordConfirmation from "@/app/components/ResetPasswordConfirmation";
+import ResetPasswordConfirmation from "@/app/components/auth/ResetPasswordConfirmation";
 
 export default function Home() {
   return (

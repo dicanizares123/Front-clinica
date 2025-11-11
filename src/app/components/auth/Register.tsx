@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { AuthActions } from "../utils";
+import { AuthActions } from "../../utils";
 import { useRouter } from "next/navigation";
 
 type FormData = {
