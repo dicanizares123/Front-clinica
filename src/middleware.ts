@@ -4,8 +4,15 @@ import { cookies } from "next/headers";
 
 export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken");
+  const pathname = request.nextUrl.pathname;
 
-  if (!accessToken && request.nextUrl.pathname !== "/") {
+  const publicRoutes = ["/", "/citaformulario"];
+
+  if (publicRoutes.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  if (!accessToken) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 }

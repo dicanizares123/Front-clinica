@@ -49,10 +49,24 @@ export default function PendingTask({ tasks }: PendingTaskProps) {
       icon: "document_scanner",
       color: "green" as const,
     },
+    {
+      id: 5,
+      title: "Notificación 4 - 01:00 PM",
+      time: "Hace 3 horas",
+      icon: "document_scanner",
+      color: "green" as const,
+    },
+    {
+      id: 6,
+      title: "Notificación 4 - 01:00 PM",
+      time: "Hace 3 horas",
+      icon: "document_scanner",
+      color: "green" as const,
+    },
   ];
 
   return (
-    <div className="bg-card-light dark:bg-card-dark p-6 rounded-xl shadow-2xl">
+    <div className="bg-card-light p-6 rounded-xl shadow-2xl">
       <h2 className="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em] mb-4">
         Actividades Pendientes
       </h2>
@@ -60,7 +74,7 @@ export default function PendingTask({ tasks }: PendingTaskProps) {
         {pendingTasks.map((task) => (
           <div
             key={task.id}
-            className="flex items-start gap-4 p-3 rounded-lg bg-background-light dark:bg-background-dark hover:shadow-md transition-shadow cursor-pointer"
+            className="flex items-start gap-4 p-3 rounded-lg bg-background-light dark:bg-background-dark  transition-shadow cursor-pointer"
           >
             <div className={`${colorClasses[task.color]} p-2 rounded-full`}>
               <span className="material-symbols-outlined text-base">
