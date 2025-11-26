@@ -1,9 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../components/shared/Button";
 import { useRouter } from "next/navigation";
+
+const API_BASE_URL = "http://localhost:8000/api";
 
 type FormData = {
   firstName: string;
@@ -11,17 +13,48 @@ type FormData = {
   cedula: string;
   celular: string;
   email: string;
+  specialtyId: string;
+  doctorId: string;
   appointmentDate: string;
   appointmentTime: string;
 };
 
-// Datos simulados de horarios disponibles por día
-const mockAvailableSlots = {
-  "2025-11-11": ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
-  "2025-11-12": ["09:00", "10:30", "14:00", "15:30", "16:00"],
-  "2025-11-13": ["10:00", "11:00", "14:00", "15:00"],
-  "2025-11-14": ["09:00", "10:00", "11:00", "14:30", "15:00", "16:00", "17:00"],
-  "2025-11-15": ["09:00", "10:00", "14:00", "15:00"],
+type Specialty = {
+  id: number;
+  name: string;
+};
+
+type Doctor = {
+  id_doctor: number; // Cambió de 'id' a 'id_doctor'
+  full_name: string;
+  primary_specialty: number | null;
+  primary_specialty_name: string | null;
+  professional_id?: string;
+  doctor_specialist_id?: number; // ID de la relación DoctorSpecialist
+};
+
+type Patient = {
+  id: number;
+  first_names: string;
+  last_names: string;
+  document_id: string;
+  email: string;
+  phone_number: string;
+  address: string;
+};
+
+type Appointment = {
+  id: number;
+  uuid: string;
+  patient: number;
+  doctor_specialist: number;
+  doctor_name: string;
+  specialty_name: string;
+  appointment_date: string;
+  appointment_time: string;
+  duration_minutes: number;
+  status: string;
+  notes: string;
 };
 
 export default function CitaFormulario() {
@@ -34,11 +67,94 @@ export default function CitaFormulario() {
     clearErrors,
   } = useForm<FormData>();
   const router = useRouter();
+
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("");
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [isLoadingSpecialties, setIsLoadingSpecialties] = useState(true);
+  const [isLoadingDoctors, setIsLoadingDoctors] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const selectedSpecialtyId = watch("specialtyId");
+  const selectedDoctorId = watch("doctorId");
   const selectedDateValue = watch("appointmentDate");
+
+  // Cargar especialidades al montar el componente
+  useEffect(() => {
+    const loadSpecialties = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/specialties/`);
+        if (response.ok) {
+          const data = await response.json();
+          const allSpecialties = data.results || data || [];
+          setSpecialties(allSpecialties);
+          console.log("Especialidades cargadas:", allSpecialties);
+        } else {
+          console.error("Error al cargar especialidades");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoadingSpecialties(false);
+      }
+    };
+
+    loadSpecialties();
+  }, []);
+
+  // Cargar doctores al montar el componente (sin autenticación)
+  useEffect(() => {
+    const loadDoctors = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/doctors/`);
+        if (response.ok) {
+          const data = await response.json();
+          const allDoctors = data.results || [];
+          setDoctors(allDoctors);
+          setFilteredDoctors(allDoctors); // Inicialmente mostrar todos
+          console.log("Doctores cargados:", allDoctors);
+        } else {
+          console.error("Error al cargar doctores");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoadingDoctors(false);
+      }
+    };
+
+    loadDoctors();
+  }, []);
+
+  // Filtrar doctores cuando se selecciona una especialidad
+  useEffect(() => {
+    if (selectedSpecialtyId) {
+      console.log("Filtrando por especialidad:", selectedSpecialtyId);
+      const filtered = doctors.filter((doctor) => {
+        if (doctor) {
+          console.log(
+            `Doctor: ${doctor.full_name}, specialty: ${
+              doctor.primary_specialty
+            }, match: ${
+              doctor.primary_specialty?.toString() === selectedSpecialtyId
+            }`
+          );
+          return doctor.primary_specialty?.toString() === selectedSpecialtyId;
+        }
+        return false;
+      });
+      console.log("Doctores filtrados:", filtered);
+      setFilteredDoctors(filtered);
+    } else {
+      // Si no hay especialidad seleccionada, mostrar todos
+      const validDoctors = doctors.filter((doctor) => doctor);
+      setFilteredDoctors(validDoctors);
+      console.log("Mostrando todos los doctores:", validDoctors);
+    }
+  }, [selectedSpecialtyId, doctors]);
 
   // Validación de cédula ecuatoriana (10 dígitos)
   const validateCedula = (cedula: string) => {
@@ -79,84 +195,224 @@ export default function CitaFormulario() {
     return true;
   };
 
-  // Cargar horarios disponibles cuando se selecciona una fecha
+  // Cargar horarios disponibles cuando se selecciona una fecha y doctor
   const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
     setSelectedDate(date);
-    setIsLoadingSlots(true);
     clearErrors("appointmentTime");
 
-    // Simular llamada a API
-    setTimeout(() => {
-      // En producción, reemplaza esto con:
-      // const response = await fetch(`/api/appointments/available-slots?date=${date}`);
-      // const data = await response.json();
-      // setAvailableSlots(data.slots);
+    // Necesitamos el doctor seleccionado
+    if (!selectedDoctorId) {
+      setError("doctorId", {
+        type: "manual",
+        message: "Primero selecciona un doctor",
+      });
+      return;
+    }
 
-      const slots =
-        mockAvailableSlots[date as keyof typeof mockAvailableSlots] || [];
-      setAvailableSlots(slots);
-      setIsLoadingSlots(false);
+    // Verificar que los doctores estén cargados
+    if (!doctors || doctors.length === 0) return;
 
-      if (slots.length === 0) {
-        setError("appointmentDate", {
-          type: "manual",
-          message: "No hay horarios disponibles para esta fecha",
-        });
+    // Obtener el doctor por su ID
+    const selectedDoctor = doctors.find(
+      (d) => d.id_doctor.toString() === selectedDoctorId
+    );
+
+    if (!selectedDoctor) return;
+
+    setIsLoadingSlots(true);
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/available-slots/?doctor=${selectedDoctor.id_doctor}&date=${date}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableSlots(data.available_slots || []);
+
+        if (data.available_slots.length === 0) {
+          setError("appointmentDate", {
+            type: "manual",
+            message: "No hay horarios disponibles para esta fecha",
+          });
+        }
       }
-    }, 500);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("appointmentDate", {
+        type: "manual",
+        message: "Error al cargar horarios disponibles",
+      });
+    } finally {
+      setIsLoadingSlots(false);
+    }
   };
 
   const onSubmit = async (data: FormData) => {
-    console.log("Datos del formulario:", data);
-
-    // Preparar datos para enviar a la API
-    const appointmentData = {
-      patient: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        cedula: data.cedula,
-        celular: data.celular,
-        email: data.email,
-      },
-      appointment: {
-        date: data.appointmentDate,
-        time: data.appointmentTime,
-        type: "consultation", // Puedes agregar un campo para esto
-      },
-    };
+    setIsSubmitting(true);
 
     try {
-      // TODO: Descomentar cuando tengas el backend listo
-      /*
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(appointmentData),
-      });
+      // PASO 1: Buscar o crear paciente
+      let patientId: number;
 
-      if (!response.ok) {
-        throw new Error('Error al crear la cita');
+      try {
+        // Buscar paciente por cédula
+        const searchResponse = await fetch(
+          `${API_BASE_URL}/patients/by_document/${data.cedula}/`
+        );
+
+        if (searchResponse.ok) {
+          const existingPatient = (await searchResponse.json()) as Patient;
+          patientId = existingPatient.id;
+          console.log("Paciente existente encontrado:", existingPatient);
+        } else {
+          // Paciente no existe (404), crear uno nuevo
+          const createResponse = await fetch(`${API_BASE_URL}/patients/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_names: data.firstName,
+              last_names: data.lastName,
+              document_id: data.cedula,
+              email: data.email,
+              phone_number: data.celular,
+              address: "",
+            }),
+          });
+
+          if (!createResponse.ok) {
+            throw new Error("Error al registrar el paciente");
+          }
+
+          const newPatient = (await createResponse.json()) as Patient;
+          patientId = newPatient.id;
+          console.log("Nuevo paciente creado:", newPatient);
+        }
+      } catch (error: any) {
+        throw new Error("Error al buscar o crear el paciente");
       }
 
-      const result = await response.json();
-      */
-
-      // Simulación de éxito
-      alert(
-        `¡Cita registrada exitosamente!\n\nPaciente: ${data.firstName} ${data.lastName}\nFecha: ${data.appointmentDate}\nHora: ${data.appointmentTime}\n\nEn producción, esto se guardará en la base de datos.`
+      // PASO 2: Obtener el doctor seleccionado
+      const selectedDoctor = doctors.find(
+        (d) => d.id_doctor.toString() === data.doctorId
       );
 
-      // Redirigir al dashboard o página de confirmación
-      // router.push('/dashboard');
-    } catch (error) {
+      if (!selectedDoctor) {
+        throw new Error("No se encontró el doctor seleccionado");
+      }
+
+      // Usar doctor_specialist_id si existe, sino usar id_doctor
+      const doctorSpecialistId =
+        selectedDoctor.doctor_specialist_id || selectedDoctor.id_doctor;
+
+      // Debug: verificar tipos ANTES de procesar
+      console.log("Tipo de patientId:", typeof patientId, patientId);
+      console.log(
+        "Tipo de doctor_specialist:",
+        typeof doctorSpecialistId,
+        doctorSpecialistId
+      );
+
+      // Extraer el ID si es un objeto, sino usar el valor directamente
+      const patientIdNumber =
+        typeof patientId === "object" && patientId !== null
+          ? patientId.id
+          : patientId;
+      const doctorSpecialistIdNumber =
+        typeof doctorSpecialistId === "object" && doctorSpecialistId !== null
+          ? doctorSpecialistId.id
+          : doctorSpecialistId;
+
+      // Formatear la hora: si ya tiene segundos, no agregar, sino agregar ":00"
+      const formattedTime = data.appointmentTime.includes(":00")
+        ? data.appointmentTime
+        : data.appointmentTime + ":00";
+
+      // Asegurar que sean números enteros
+      const patientIdInt = parseInt(patientIdNumber.toString());
+      const doctorSpecialistIdInt = parseInt(
+        doctorSpecialistIdNumber.toString()
+      );
+
+      const requestBody = {
+        patient: patientIdInt,
+        doctor_specialist: doctorSpecialistIdInt,
+        appointment_date: data.appointmentDate,
+        appointment_time: formattedTime,
+        duration_minutes: 60,
+        notes: "",
+      };
+
+      console.log("Creando cita con:", requestBody);
+      console.log("Tipos:", {
+        patient: typeof patientIdInt,
+        doctor_specialist: typeof doctorSpecialistIdInt,
+      });
+
+      // PASO 3: Crear la cita
+      const appointmentResponse = await fetch(`${API_BASE_URL}/appointments/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!appointmentResponse.ok) {
+        const errorData = await appointmentResponse.json();
+        console.error("Error completo del backend:", errorData);
+        console.error("Status:", appointmentResponse.status);
+
+        // Mostrar el error completo en formato legible
+        const errorMessage = JSON.stringify(errorData, null, 2);
+        alert(
+          `Error del backend (${appointmentResponse.status}):\n\n${errorMessage}`
+        );
+
+        throw new Error(
+          errorData.detail || errorData.message || "Error al crear la cita"
+        );
+      }
+
+      const appointment = (await appointmentResponse.json()) as Appointment;
+
+      console.log("Cita creada:", appointment);
+
+      // Éxito
+      alert(
+        `✅ ¡Cita agendada exitosamente!\n\n` +
+          `Paciente: ${data.firstName} ${data.lastName}\n` +
+          `Doctor: ${appointment.doctor_name}\n` +
+          `Especialidad: ${appointment.specialty_name}\n` +
+          `Fecha: ${appointment.appointment_date}\n` +
+          `Hora: ${appointment.appointment_time.substring(0, 5)}\n` +
+          `Código: ${appointment.uuid}`
+      );
+
+      // Redirigir al home
+      router.push("/");
+    } catch (error: any) {
       console.error("Error:", error);
       setError("root", {
         type: "manual",
-        message: "Error al registrar la cita. Por favor intenta nuevamente.",
+        message:
+          error.message ||
+          "Error al registrar la cita. Por favor intenta nuevamente.",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  // Debug: ver el estado actual de filteredDoctors en cada render
+  console.log(
+    "Render - filteredDoctors:",
+    filteredDoctors,
+    "length:",
+    filteredDoctors.length
+  );
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 py-8">
@@ -301,6 +557,97 @@ export default function CitaFormulario() {
             </div>
           </div>
 
+          {/* Selector de Especialidad */}
+          <div className="flex flex-col">
+            <label className="text-text-primary text-sm font-medium leading-normal pb-2">
+              Seleccionar Especialidad <span className="text-red-500">*</span>
+            </label>
+            {isLoadingSpecialties ? (
+              <div className="flex items-center justify-center h-12 bg-gray-50 rounded-lg border border-slate-300">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+              </div>
+            ) : (
+              <select
+                {...register("specialtyId", {
+                  required: "Debes seleccionar una especialidad",
+                })}
+                className="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary px-[15px] text-base font-normal leading-normal"
+              >
+                <option value="">-- Selecciona una especialidad --</option>
+                {Array.isArray(specialties) &&
+                  specialties.map((specialty) => (
+                    <option key={specialty.id} value={specialty.id.toString()}>
+                      {specialty.name}
+                    </option>
+                  ))}
+              </select>
+            )}
+            {errors.specialtyId && (
+              <span className="text-xs text-red-600 mt-1">
+                {errors.specialtyId.message}
+              </span>
+            )}
+          </div>
+
+          {/* Selector de Doctor */}
+          <div className="flex flex-col">
+            <label className="text-text-primary text-sm font-medium leading-normal pb-2">
+              Seleccionar Doctor <span className="text-red-500">*</span>
+            </label>
+            {isLoadingDoctors ? (
+              <div className="flex items-center justify-center h-12 bg-gray-50 rounded-lg border border-slate-300">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+              </div>
+            ) : (
+              <select
+                {...register("doctorId", {
+                  required: "Debes seleccionar un doctor",
+                })}
+                className="form-input flex w-full resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary px-[15px] text-base font-normal leading-normal"
+              >
+                <option value="">-- Selecciona un doctor --</option>
+                {(() => {
+                  console.log("Antes del filter:", filteredDoctors);
+                  const afterFilter = filteredDoctors.filter((doctor) => {
+                    console.log(
+                      "Filtrando doctor:",
+                      doctor,
+                      "tiene id?",
+                      doctor?.id_doctor
+                    );
+                    return doctor && doctor.id_doctor;
+                  });
+                  console.log("Después del filter:", afterFilter);
+                  return afterFilter.map((doctor) => {
+                    console.log(
+                      "Renderizando option:",
+                      doctor.id_doctor,
+                      doctor.full_name
+                    );
+                    return (
+                      <option
+                        key={doctor.id_doctor}
+                        value={doctor.id_doctor.toString()}
+                      >
+                        {doctor.full_name}
+                      </option>
+                    );
+                  });
+                })()}
+                {filteredDoctors.length === 0 && selectedSpecialtyId && (
+                  <option value="" disabled>
+                    No hay doctores para esta especialidad
+                  </option>
+                )}
+              </select>
+            )}
+            {errors.doctorId && (
+              <span className="text-xs text-red-600 mt-1">
+                {errors.doctorId.message}
+              </span>
+            )}
+          </div>
+
           {/* Fecha de la cita */}
           <div className="flex flex-col">
             <label className="text-text-primary text-sm font-medium leading-normal pb-2">
@@ -395,8 +742,14 @@ export default function CitaFormulario() {
               type="button"
               variant="secondary"
               onClick={() => router.back()}
+              disabled={isSubmitting}
             />
-            <Button textButton="Agendar Cita" type="submit" />
+            <Button
+              textButton={isSubmitting ? "Agendando..." : "Agendar Cita"}
+              type="submit"
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+            />
           </div>
         </form>
       </div>

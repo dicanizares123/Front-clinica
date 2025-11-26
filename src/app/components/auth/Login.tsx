@@ -27,7 +27,7 @@ const Login = () => {
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
-      router.push("/dashboard");
+      router.push("/home");
     }
   }, [router]);
 
@@ -36,7 +36,7 @@ const Login = () => {
       .json((json) => {
         storeToken(json.access, "access");
         storeToken(json.refresh, "refresh");
-        router.push("/dashboard");
+        router.push("/home");
       })
       .catch((err) => {
         let errorMessage = "Login failed";

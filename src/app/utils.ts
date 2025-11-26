@@ -42,7 +42,7 @@ const register = (email: string, username: string, password: string) => {
 };
 
 const login = (email: string, password: string) => {
-  return api.post({ username: email, password }, "/auth/jwt/create/");
+  return api.post({ email, password }, "/auth/jwt/create/");
 };
 
 const logout = () => {

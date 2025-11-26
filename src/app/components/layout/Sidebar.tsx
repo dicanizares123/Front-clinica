@@ -6,10 +6,11 @@ import { useState } from "react";
 import { AuthActions } from "../../utils";
 
 const menuItems = [
-  { icon: "dashboard", label: "Dashboard", href: "/dashboard" },
-  { icon: "receipt_long", label: "Facturas", href: "/dashboard/invoices" },
-  { icon: "group", label: "Usuarios", href: "/dashboard/users" },
-  { icon: "settings", label: "Configuración", href: "/dashboard/settings" },
+  { icon: "home", label: "Inicio", href: "/home" },
+  { icon: "calendar_today", label: "Calendario", href: "/home/calendar" },
+  { icon: "group", label: "Pacientes", href: "/home/patients" },
+  { icon: "receipt_long", label: "Facturas", href: "/home/invoices" },
+  { icon: "settings", label: "Configuración", href: "/home/settings" },
 ];
 
 interface SidebarProps {
@@ -17,6 +18,10 @@ interface SidebarProps {
     username: string;
     email: string;
     role?: string;
+    uuid?: string;
+    first_names?: string;
+    last_names?: string;
+    permissions?: any;
   };
 }
 
@@ -109,7 +114,7 @@ export default function Sidebar({ user }: SidebarProps) {
             </div>
             <div className="flex flex-col">
               <h1 className="text-white text-base font-medium leading-normal">
-                {user?.username || "Admin Name"}
+                {user?.first_names} {user?.last_names}
               </h1>
               <p className="text-gray-400 text-sm font-normal leading-normal mt-1">
                 {user?.role || "Administrador "}

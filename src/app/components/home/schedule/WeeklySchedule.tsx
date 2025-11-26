@@ -6,8 +6,8 @@ import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./calendar-custom.css";
 import { useState, useCallback } from "react";
-import useSWR from "swr";
-import { fetcher } from "@/app/fetcher";
+/* import useSWR from "swr";
+import { fetcher } from "@/app/fetcher"; */
 
 // Configurar moment en español
 moment.locale("es");

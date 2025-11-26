@@ -2,19 +2,20 @@
 
 import Sidebar from "./Sidebar";
 
-interface DashboardLayoutProps {
+interface HomeLayoutProps {
   children: React.ReactNode;
   user?: {
     username: string;
     email: string;
     role?: string;
+    uuid?: string;
+    first_names?: string;
+    last_names?: string;
+    permissions?: any;
   };
 }
 
-export default function DashboardLayout({
-  children,
-  user,
-}: DashboardLayoutProps) {
+export default function HomeLayout({ children, user }: HomeLayoutProps) {
   return (
     <div className="bg-background-light font-display">
       <div className="relative flex h-auto min-h-screen w-full flex-row">
