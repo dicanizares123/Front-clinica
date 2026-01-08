@@ -42,3 +42,29 @@ const api = () => {
 export const fetcher = (url: string): Promise<any> => {
   return api().get(url).json();
 };
+
+// Helper functions for CRUD operations
+export const apiPost = <T = any>(url: string, data: any): Promise<T> => {
+  return api().url(url).post(data).json();
+};
+
+export const apiPatch = <T = any>(url: string, data: any): Promise<T> => {
+  return api().url(url).patch(data).json();
+};
+
+export const apiPut = <T = any>(url: string, data: any): Promise<T> => {
+  return api().url(url).put(data).json();
+};
+
+export const apiDelete = (url: string): Promise<void> => {
+  return api()
+    .url(url)
+    .delete()
+    .res()
+    .then(() => undefined);
+};
+
+// POST without body (for marking notifications as read, etc.)
+export const apiPostEmpty = <T = any>(url: string): Promise<T> => {
+  return api().url(url).post().json();
+};

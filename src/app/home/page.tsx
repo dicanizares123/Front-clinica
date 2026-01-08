@@ -5,12 +5,10 @@ import { fetcher } from "../../app/fetcher";
 import HomeLayout from "../components/layout/HomeLayout";
 import Header from "../components/layout/Header";
 import StatsGrid from "../components/home/stats/StatsGrid";
-import WeeklyActivityChart from "../components/home/charts/WeeklyActivityChart";
 import PendingTask from "../components/home/task/PendingTask";
-import { useState } from "react";
+import AppointmentStatusChart from "../components/home/charts/AppointmentStatusChart";
 export default function Home() {
   const { data: userData } = useSWR("/auth/users/me/", fetcher);
-  const [showCalendarTip, setShowCalendarTip] = useState(true);
 
   // Debug: ver qué está retornando el backend
   console.log("User data from backend:", userData);
@@ -37,20 +35,6 @@ export default function Home() {
 
   return (
     <HomeLayout user={user}>
-      {showCalendarTip && (
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex justify-between items-center">
-          <p className="text-sm text-blue-700">
-            💡 <strong>Tip:</strong> Si los botones del calendario no responden,
-            recarga la página (F5)
-          </p>
-          <button
-            onClick={() => setShowCalendarTip(false)}
-            className="text-blue-700 hover:text-blue-900"
-          >
-            ✕
-          </button>
-        </div>
-      )}
       <Header
         title="Inicio y Actividades Principales"
         subtitle="Vista general de tu sistema"
@@ -62,13 +46,13 @@ export default function Home() {
           {/* Stats Grid */}
           <StatsGrid />
 
-          {/* Chart */}
-          <WeeklyActivityChart />
+          {/* Chart de pastel - Estado de citas */}
+          <AppointmentStatusChart />
         </div>
 
         {/* Sidebar derecho */}
         <div className="col-span-3 lg:col-span-1 flex flex-col gap-6">
-          <PendingTask />
+          <PendingTask maxHeight="500px" />
         </div>
       </div>
     </HomeLayout>

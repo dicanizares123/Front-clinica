@@ -20,13 +20,13 @@ interface PatientData {
   date: string; // Fecha formateada (ej: "1 Nov")
 }
 
-interface WeeklyActivityChartProps {
+interface MonthlyActivityChartProps {
   data?: PatientData[];
 }
 
-export default function WeeklyActivityChart({
+export default function MonthlyActivityChart({
   data,
-}: WeeklyActivityChartProps) {
+}: MonthlyActivityChartProps) {
   const [mounted, setMounted] = useState(false);
 
   // Esperar a que el componente esté montado en el cliente

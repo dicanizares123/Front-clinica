@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.21.3",
     "date-fns": "^4.1.0",
     "js-cookie": "^3.0.5",
     "js-cookies": "^1.0.4",

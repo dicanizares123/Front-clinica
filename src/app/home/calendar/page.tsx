@@ -1,12 +1,16 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/app/fetcher";
 import HomeLayout from "@/app/components/layout/HomeLayout";
-import WeeklySchedule from "@/app/components/home/schedule/WeeklySchedule";
+import Schedule from "@/app/components/home/schedule/Schedule";
+import AppointmentModal from "@/app/components/home/schedule/AppointmentModal";
 
 export default function CalendarPage() {
   const { data: userData } = useSWR("/auth/users/me/", fetcher);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Extraer solo las propiedades necesarias del usuario
   const user = userData
@@ -20,6 +24,11 @@ export default function CalendarPage() {
         permissions: userData.role || {},
       }
     : undefined;
+
+  // Forzar refresh del Schedule
+  const handleRefresh = useCallback(() => {
+    setRefreshKey((prev) => prev + 1);
+  }, []);
 
   return (
     <HomeLayout user={user}>
@@ -36,14 +45,24 @@ export default function CalendarPage() {
           </div>
 
           {/* Botón para crear nueva cita */}
-          <button className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+          >
             <span className="material-symbols-outlined">add</span>
             Nueva Cita
           </button>
         </div>
 
         {/* Calendario a pantalla completa */}
-        <WeeklySchedule />
+        <Schedule key={refreshKey} user={user} onRefresh={handleRefresh} />
+
+        {/* Modal para crear cita desde el botón del header */}
+        <AppointmentModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSuccess={handleRefresh}
+        />
       </div>
     </HomeLayout>
   );

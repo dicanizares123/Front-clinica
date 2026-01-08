@@ -10,7 +10,6 @@ const menuItems = [
   { icon: "calendar_today", label: "Calendario", href: "/home/calendar" },
   { icon: "group", label: "Pacientes", href: "/home/patients" },
   { icon: "receipt_long", label: "Facturas", href: "/home/invoices" },
-  { icon: "settings", label: "Configuración", href: "/home/settings" },
 ];
 
 interface SidebarProps {

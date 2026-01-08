@@ -315,30 +315,14 @@ export default function CitaFormulario() {
         doctorSpecialistId
       );
 
-      // Extraer el ID si es un objeto, sino usar el valor directamente
-      const patientIdNumber =
-        typeof patientId === "object" && patientId !== null
-          ? patientId.id
-          : patientId;
-      const doctorSpecialistIdNumber =
-        typeof doctorSpecialistId === "object" && doctorSpecialistId !== null
-          ? doctorSpecialistId.id
-          : doctorSpecialistId;
-
       // Formatear la hora: si ya tiene segundos, no agregar, sino agregar ":00"
       const formattedTime = data.appointmentTime.includes(":00")
         ? data.appointmentTime
         : data.appointmentTime + ":00";
 
-      // Asegurar que sean números enteros
-      const patientIdInt = parseInt(patientIdNumber.toString());
-      const doctorSpecialistIdInt = parseInt(
-        doctorSpecialistIdNumber.toString()
-      );
-
       const requestBody = {
-        patient: patientIdInt,
-        doctor_specialist: doctorSpecialistIdInt,
+        patient: patientId,
+        doctor_specialist: doctorSpecialistId,
         appointment_date: data.appointmentDate,
         appointment_time: formattedTime,
         duration_minutes: 60,
@@ -346,10 +330,6 @@ export default function CitaFormulario() {
       };
 
       console.log("Creando cita con:", requestBody);
-      console.log("Tipos:", {
-        patient: typeof patientIdInt,
-        doctor_specialist: typeof doctorSpecialistIdInt,
-      });
 
       // PASO 3: Crear la cita
       const appointmentResponse = await fetch(`${API_BASE_URL}/appointments/`, {
@@ -390,9 +370,6 @@ export default function CitaFormulario() {
           `Hora: ${appointment.appointment_time.substring(0, 5)}\n` +
           `Código: ${appointment.uuid}`
       );
-
-      // Redirigir al home
-      router.push("/");
     } catch (error: any) {
       console.error("Error:", error);
       setError("root", {
