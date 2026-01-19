@@ -1,28 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #000000;
-  --color-background-light: #f7f7f7;
-  --color-surface-light: #ffffff;
-  --color-text-primary: #1e293b;
-  --color-text-secondary: #64748b;
-  --card-light: #ffffff;
-  --text-light: #111418;
-  --text-secondary-light: #617589;
-  --border-light: #e5e7eb;
+  --color-primary: #727cf5;
+  --color-primary-light: #9098f8;
+  --color-background-dark: #1e2029;
+  --color-surface-dark: #262a37;
+  --color-text-primary: #e3eaef;
+  --color-text-secondary: #98a6ad;
+  --card-dark: #262a37;
+  --border-dark: #323a46;
 }
 
 @layer utilities {
   .bg-primary {
     background-color: var(--color-primary);
   }
-
-  .bg-background-light {
-    background-color: var(--color-background-light);
+  .bg-primary-light {
+    background-color: var(--color-primary-light);
   }
-
-  .bg-surface-light {
-    background-color: var(--color-surface-light);
+  .bg-background-dark {
+    background-color: var(--color-background-dark);
+  }
+  .bg-surface-dark {
+    background-color: var(--color-surface-dark);
   }
   .text-primary {
     color: var(--color-text-primary);
@@ -30,23 +30,12 @@
   .text-secondary {
     color: var(--color-text-secondary);
   }
-
-  .border-light {
-    border-color: var(--border-light);
-  }
-  .card-light {
-    background-color: var(--card-light);
-  }
-  .text-light {
-    color: var(--text-light);
-  }
-  .text-secondary-light {
-    color: var(--text-secondary-light);
-  }
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--color-background-dark);
+  color: var(--color-text-primary);
   font-family: "Inter", sans-serif;
 }

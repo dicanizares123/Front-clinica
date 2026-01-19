@@ -25,7 +25,7 @@ function Button({
     "flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 text-base font-bold leading-normal tracking-[0.015em] focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantStyles = {
-    primary: "bg-black text-white hover:bg-gray-800 focus:ring-black",
+    primary: "bg-primary text-white hover:bg-primary-light focus:ring-primary",
     secondary:
       "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-400",
     tertiary:

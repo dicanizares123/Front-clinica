@@ -17,10 +17,10 @@ interface HomeLayoutProps {
 
 export default function HomeLayout({ children, user }: HomeLayoutProps) {
   return (
-    <div className="bg-background-light font-display">
-      <div className="relative flex h-auto min-h-screen w-full flex-row">
+    <div className="bg-background-dark min-h-screen font-display text-primary">
+      <div className="relative flex h-full w-full flex-row">
         <Sidebar user={user} />
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-6 overflow-y-auto h-screen">{children}</main>
       </div>
     </div>
   );

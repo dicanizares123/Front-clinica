@@ -28,7 +28,7 @@ export default function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { logout, removeTokens } = AuthActions();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleLogout = () => {
     logout()
@@ -44,7 +44,7 @@ export default function Sidebar({ user }: SidebarProps) {
 
   return (
     <aside
-      className={`flex h-screen min-h-full flex-col bg-black p-4 border-r border-gray-800 shadow-2xl sticky top-0 transition-all duration-200 ease-in-out ${
+      className={`flex h-screen min-h-full flex-col bg-surface-dark border-r border-[#323a46] shadow-xl sticky top-0 transition-all duration-200 ease-in-out p-4 ${
         isCollapsed ? "w-20" : "w-64"
       }`}
     >
@@ -55,7 +55,7 @@ export default function Sidebar({ user }: SidebarProps) {
       >
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-white cursor-pointer hover:bg-gray-900 transition-colors ${
+          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-white cursor-pointer hover:bg-primary-light transition-colors ${
             isCollapsed ? "justify-center" : ""
           }`}
         >
@@ -74,9 +74,11 @@ export default function Sidebar({ user }: SidebarProps) {
             key={item.href}
             href={item.href}
             className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+              isCollapsed ? "justify-center" : ""
+            } ${
               pathname === item.href
-                ? "bg-gray-800 text-white"
-                : "text-gray-400 hover:bg-gray-900 hover:text-white"
+                ? "bg-primary-light text-white"
+                : "text-gray-300 hover:bg-primary-light hover:text-white"
             }`}
             title={isCollapsed ? item.label : ""}
           >
@@ -90,7 +92,9 @@ export default function Sidebar({ user }: SidebarProps) {
         ))}
 
         <button
-          className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-900 hover:text-white cursor-pointer w-full text-left transition-colors"
+          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-primary-light hover:text-white cursor-pointer w-full transition-colors ${
+            isCollapsed ? "justify-center" : "text-left"
+          }`}
           onClick={handleLogout}
           title={isCollapsed ? "Cerrar sesión" : ""}
         >
@@ -106,7 +110,7 @@ export default function Sidebar({ user }: SidebarProps) {
       {!isCollapsed && (
         <div className="flex flex-col gap-4 mt-auto">
           <div className="flex gap-3 items-center">
-            <div className="bg-gray-800 rounded-full p-2">
+            <div className="bg-primary-light rounded-full p-2">
               <span className="material-symbols-outlined text-white">
                 person
               </span>
@@ -115,10 +119,10 @@ export default function Sidebar({ user }: SidebarProps) {
               <h1 className="text-white text-base font-medium leading-normal">
                 {user?.first_names} {user?.last_names}
               </h1>
-              <p className="text-gray-400 text-sm font-normal leading-normal mt-1">
+              <p className="text-gray-300 text-sm font-normal leading-normal mt-1">
                 {user?.role || "Administrador "}
               </p>
-              <p className="text-gray-400 text-sm font-normal leading-normal mt-1">
+              <p className="text-gray-300 text-sm font-normal leading-normal mt-1">
                 {user?.email || "admin@example.com"}
               </p>
             </div>
@@ -129,7 +133,7 @@ export default function Sidebar({ user }: SidebarProps) {
       {isCollapsed && (
         <div className="flex flex-col gap-4 mt-auto">
           <div className="flex justify-center">
-            <div className="bg-gray-800 rounded-full p-2">
+            <div className="bg-primary-light rounded-full p-2">
               <span className="material-symbols-outlined text-white">
                 person
               </span>

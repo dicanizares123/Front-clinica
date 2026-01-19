@@ -3,35 +3,43 @@
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  onNotificationClick?: () => void;
+  notificationPanel?: React.ReactNode;
 }
 
-export default function Header({ title, subtitle }: HeaderProps) {
+export default function Header({
+  title,
+  subtitle,
+  onNotificationClick,
+  notificationPanel,
+}: HeaderProps) {
   return (
-    <div>
-      <div className="mb-6 flex w-full justify-center mb-8 ">
-        <div className="h-10 w-10">
-          <span className="material-symbols-outlined !text-[60px]">
-            shield_with_heart
-          </span>
-        </div>
+    <div className="flex justify-between items-center mb-6">
+      <div>
+        <h3 className="text-xl font-semibold text-text-primary">{title}</h3>
+        {subtitle && (
+          <p className="text-sm text-text-secondary mt-1">{subtitle}</p>
+        )}
       </div>
-      <h2 className="text-text-primary tracking-tight text-3xl font-bold leading-tight text-center pb-4">
-        Centro Psicológico Atrévete
-      </h2>
-      <header className="flex items-center justify-between whitespace-nowrap mb-8">
-        <div className="flex items-center gap-4 text-text-light dark:text-text-dark">
-          <div>
-            <h3 className="text-2xl font-bold leading-tight tracking-[-0.015em]">
-              {title}
-            </h3>
-            {subtitle && (
-              <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                {subtitle}
-              </p>
-            )}
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <div
+            className="cursor-pointer hover:bg-white/5 p-2 rounded-full transition-colors relative"
+            onClick={onNotificationClick}
+          >
+            <span className="material-symbols-outlined text-text-secondary">
+              notifications
+            </span>
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
           </div>
+          {notificationPanel && (
+            <div className="absolute right-0 top-full mt-2 w-80 z-50">
+              {notificationPanel}
+            </div>
+          )}
         </div>
-      </header>
+        <div className="flex items-center gap-2"></div>
+      </div>
     </div>
   );
 }

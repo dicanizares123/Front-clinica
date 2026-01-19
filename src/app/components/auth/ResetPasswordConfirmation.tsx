@@ -74,7 +74,7 @@ const ResetPasswordConfirmation = () => {
               type="password"
               placeholder="Ingresa tu nueva contraseña"
               {...register("password", { required: true })}
-              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+              className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-[#323a46] bg-surface-dark focus:border-primary h-12 placeholder:text-text-secondary p-4 shadow text-base font-normal leading-normal mt-2"
             />
             {errors.password && (
               <span className="text-xs text-red-600">Password is required</span>

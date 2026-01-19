@@ -78,19 +78,6 @@ export default function PatientsPage() {
   const totalCount = patientsData?.count || 0;
   const totalPages = Math.ceil(totalCount / pageSize);
 
-  // Handlers
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearch(searchInput);
-    setPage(1);
-  };
-
-  const handleClearSearch = () => {
-    setSearchInput("");
-    setSearch("");
-    setPage(1);
-  };
-
   const handleEdit = (patient: Patient) => {
     setSelectedPatient(patient);
     setIsEditModalOpen(true);
@@ -132,39 +119,6 @@ export default function PatientsPage() {
             <span className="material-symbols-outlined">person_add</span>
             Nuevo Paciente
           </button>
-        </div>
-
-        {/* Barra de búsqueda */}
-        <div className="bg-white rounded-xl shadow-sm p-4">
-          <form onSubmit={handleSearch} className="flex gap-3">
-            <div className="relative flex-1">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                search
-              </span>
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Buscar por nombre, cédula o email..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Buscar
-            </button>
-            {search && (
-              <button
-                type="button"
-                onClick={handleClearSearch}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Limpiar
-              </button>
-            )}
-          </form>
         </div>
 
         {/* Tabla de pacientes */}

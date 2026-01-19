@@ -90,7 +90,7 @@ const Login = () => {
                 </p>
                 <input
                   {...register("username", { required: true })}
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal"
+                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-[#323a46] bg-surface-dark focus:border-primary h-12 placeholder:text-text-secondary p-4 shadow text-base font-normal leading-normal"
                   placeholder="Ingresa tu nombre de usuario"
                 />
                 {errors.username && (
@@ -119,7 +119,7 @@ const Login = () => {
                   <input
                     {...register("password", { required: true })}
                     type={showPassword ? "text" : "password"}
-                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-slate-300 bg-surface-light focus:border-primary h-12 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal pr-12"
+                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-[#323a46] bg-surface-dark focus:border-primary h-12 placeholder:text-text-secondary p-4 shadow text-base font-normal leading-normal pr-12"
                     placeholder="Ingresa tu contraseña"
                   />
                   <button

@@ -99,15 +99,15 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
   }, [mutate, mutateCount]);
 
   return (
-    <div className="bg-card-light p-6 rounded-xl shadow-2xl flex flex-col">
+    <div className="bg-surface-dark p-6 rounded-md shadow border border-[#323a46] flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-text-light dark:text-text-dark text-lg font-bold leading-tight tracking-[-0.015em]">
-            Notificaciones
+          <h2 className="text-text-primary text-base font-semibold leading-tight tracking-[-0.015em]">
+            Notifications
           </h2>
           {unreadCount > 0 && (
-            <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">
+            <span className="bg-red-500/20 text-red-500 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center border border-red-500/20">
               {unreadCount > 99 ? "99+" : unreadCount}
             </span>
           )}
@@ -115,9 +115,10 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
         {notifications && notifications.length > 0 && (
           <button
             onClick={handleMarkAllAsRead}
-            className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline"
+            className="text-xs text-blue-500 hover:text-blue-400 font-medium hover:underline"
           >
-            Marcar todo como leído
+            Mark all read
+
           </button>
         )}
       </div>
@@ -151,8 +152,8 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
               <div
                 key={notification.id}
                 onClick={() => handleMarkAsRead(notification.id)}
-                className={`flex items-start gap-3 p-3 rounded-lg bg-background-light dark:bg-background-dark transition-all cursor-pointer hover:shadow-md ${
-                  !notification.is_read ? "border-l-4 border-blue-500" : ""
+                className={`flex items-start gap-3 p-3 rounded-lg bg-background-dark border border-[#323a46] transition-all cursor-pointer hover:bg-[#323a46] ${
+                  !notification.is_read ? "border-l-4 border-l-blue-500" : ""
                 }`}
               >
                 <div
@@ -164,17 +165,17 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-medium text-text-light dark:text-text-dark truncate">
+                    <p className="text-sm font-medium text-text-primary truncate">
                       {notification.title}
                     </p>
                     {!notification.is_read && (
                       <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1.5"></span>
                     )}
                   </div>
-                  <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-0.5 line-clamp-2">
+                  <p className="text-xs text-text-secondary mt-0.5 line-clamp-2">
                     {notification.message}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-text-secondary mt-1">
                     {notification.time_ago}
                   </p>
                 </div>
@@ -182,7 +183,7 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
             );
           })
         ) : (
-          <div className="flex flex-col items-center justify-center py-8 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-8 text-text-secondary">
             <span className="material-symbols-outlined text-5xl mb-2">
               notifications_off
             </span>
@@ -200,11 +201,11 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #cbd5e1;
+          background-color: #464f5b;
           border-radius: 3px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: #94a3b8;
+          background-color: #5d6878;
         }
       `}</style>
     </div>
