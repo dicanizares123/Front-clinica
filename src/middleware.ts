@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken");
   const pathname = request.nextUrl.pathname;
 
-  const publicRoutes = ["/", "/citaformulario"];
+  const publicRoutes = ["/", "/citaformulario", "/citaformulario/success", "/citaformulario/error"];
 
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();

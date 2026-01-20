@@ -43,26 +43,10 @@ export default function CalendarPage() {
               Gestiona y visualiza todas las citas programadas
             </p>
           </div>
-
-          {/* Botón para crear nueva cita */}
-          <button
-            onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            <span className="material-symbols-outlined">add</span>
-            Nueva Cita
-          </button>
         </div>
 
         {/* Calendario a pantalla completa */}
         <Schedule key={refreshKey} user={user} onRefresh={handleRefresh} />
-
-        {/* Modal para crear cita desde el botón del header */}
-        <AppointmentModal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
-          onSuccess={handleRefresh}
-        />
       </div>
     </HomeLayout>
   );

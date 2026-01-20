@@ -1,14 +1,12 @@
 "use client";
 
 interface HeaderProps {
-  title: string;
   subtitle?: string;
   onNotificationClick?: () => void;
   notificationPanel?: React.ReactNode;
 }
 
 export default function Header({
-  title,
   subtitle,
   onNotificationClick,
   notificationPanel,
@@ -16,7 +14,6 @@ export default function Header({
   return (
     <div className="flex justify-between items-center mb-6">
       <div>
-        <h3 className="text-xl font-semibold text-text-primary">{title}</h3>
         {subtitle && (
           <p className="text-sm text-text-secondary mt-1">{subtitle}</p>
         )}
@@ -33,7 +30,7 @@ export default function Header({
             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
           </div>
           {notificationPanel && (
-            <div className="absolute right-0 top-full mt-2 w-80 z-50">
+            <div className="absolute right-0 top-full mt-2 w-[500px] z-50">
               {notificationPanel}
             </div>
           )}

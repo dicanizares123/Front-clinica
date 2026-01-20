@@ -124,7 +124,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
     {
       revalidateOnFocus: false, // No revalidar al enfocar la ventana
       dedupingInterval: 30000, // Deduplicar requests por 30 segundos
-    }
+    },
   );
 
   // Transformar las citas del backend al formato del calendario
@@ -225,7 +225,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
       });
       setIsCreateModalOpen(true);
     },
-    []
+    [],
   );
 
   // Handler para ver/editar cita existente
@@ -243,14 +243,14 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   // Mostrar estado de carga
   if (isLoading && appointments.length === 0) {
     return (
-      <div className="col-span-3 bg-white p-6 rounded-xl shadow-2xl">
-        <h2 className="text-gray-900 dark:text-white text-lg font-bold mb-4">
+      <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
+        <h2 className="text-text-primary text-lg font-bold mb-4">
           Horario de la Semana
         </h2>
         <div className="flex items-center justify-center h-96">
           <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            <p className="text-gray-600">Cargando citas...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p className="text-text-secondary">Cargando citas...</p>
           </div>
         </div>
       </div>
@@ -261,8 +261,8 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   if (error) {
     const errorMessage = error.message || "Error al cargar las citas";
     return (
-      <div className="col-span-3 bg-white p-6 rounded-xl shadow-2xl">
-        <h2 className="text-gray-900 dark:text-white text-lg font-bold mb-4">
+      <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
+        <h2 className="text-text-primary text-lg font-bold mb-4">
           Horario de la Semana
         </h2>
         <div className="flex items-center justify-center h-96">
@@ -270,10 +270,10 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
             <span className="material-symbols-outlined text-5xl text-red-500">
               error
             </span>
-            <p className="text-red-600">{errorMessage}</p>
+            <p className="text-red-500">{errorMessage}</p>
             <button
               onClick={() => mutate()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors"
             >
               Reintentar
             </button>
@@ -284,14 +284,14 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   }
 
   return (
-    <div className="col-span-3 bg-white p-6 rounded-xl shadow-2xl">
+    <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-gray-900 dark:text-white text-lg font-bold">
+        <h2 className="text-text-primary text-lg font-bold">
           Horario de la Semana
         </h2>
         {isLoading && (
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+          <div className="flex items-center gap-2 text-sm text-text-secondary">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
             Actualizando...
           </div>
         )}
@@ -318,8 +318,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
           step={30}
           timeslots={2}
           // Interactividad
-          selectable
-          onSelectSlot={handleSelectSlot}
+          selectable={false}
           onSelectEvent={handleSelectEvent}
           // Estilos personalizados
           eventPropGetter={eventStyleGetter}
@@ -330,13 +329,13 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
               `${localizer?.format(
                 start,
                 "HH:mm",
-                culture
+                culture,
               )} - ${localizer?.format(end, "HH:mm", culture)}`,
             agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
               `${localizer?.format(
                 start,
                 "HH:mm",
-                culture
+                culture,
               )} - ${localizer?.format(end, "HH:mm", culture)}`,
           }}
           // Mensajes en español

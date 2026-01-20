@@ -33,35 +33,36 @@ export default function Home() {
   return (
     <HomeLayout user={user}>
       <Header
-        title="Dashboard"
         onNotificationClick={() => setShowNotifications(!showNotifications)}
         notificationPanel={
-            showNotifications ? <PendingTask maxHeight="320px" /> : null
+          showNotifications ? <PendingTask maxHeight="600px" /> : null
         }
       />
 
       {/* Row 1: Stats */}
       <div className="mb-6 flex justify-center w-full px-4">
-        <div className="w-full max-w-7xl mx-auto">
-            <StatsGrid />
+        <div className="w-full max-w-[1400px] mx-auto">
+          <h2 className="text-text-primary text-xl font-semibold mb-4">
+            Acciones Rápidas
+          </h2>
+          <StatsGrid />
         </div>
       </div>
 
       {/* Row 2: Appointment Status Chart (Centered) */}
       <div className="flex justify-center mb-6 w-full px-4">
-        <div className="w-full max-w-7xl mx-auto h-auto">
-            <AppointmentStatusChart />
+        <div className="w-full max-w-[1400px] mx-auto h-auto">
+          <AppointmentStatusChart />
         </div>
       </div>
-       
-       {/* Backdrop to close notifications */}
-       {showNotifications && (
-           <div 
-             className="fixed inset-0 z-40 bg-transparent"
-             onClick={() => setShowNotifications(false)}
-           />
-       )}
 
+      {/* Backdrop to close notifications */}
+      {showNotifications && (
+        <div
+          className="fixed inset-0 z-40 bg-transparent"
+          onClick={() => setShowNotifications(false)}
+        />
+      )}
     </HomeLayout>
   );
 }

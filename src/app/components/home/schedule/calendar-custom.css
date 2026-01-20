@@ -1,70 +1,241 @@
-/* Personalización del calendario */
+/* Personalización del calendario - Dark Theme */
 .rbc-calendar {
   font-family: inherit;
+  color: var(--color-text-secondary);
 }
 
+/* Headers de los días (Lun, Mar, Mie...) */
 .rbc-header {
   padding: 12px 6px;
   font-weight: 600;
-  background-color: #f3f4f6;
-  border-bottom: 2px solid #e5e7eb;
+  background-color: var(--color-surface-dark);
+  border-bottom: 2px solid var(--border-dark) !important;
+  color: var(--color-text-primary);
 }
 
+.rbc-header + .rbc-header {
+  border-left: 1px solid var(--border-dark) !important;
+}
+
+/* Contenedor principal de la vista de tiempo */
 .rbc-time-view {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-dark) !important;
   border-radius: 8px;
   overflow: hidden;
+  background-color: var(--color-surface-dark);
+}
+
+/* Rejilla de días */
+.rbc-time-header-content {
+  border-left: 1px solid var(--border-dark) !important;
+}
+
+.rbc-time-content {
+  border-top: 1px solid var(--border-dark) !important;
 }
 
 .rbc-time-slot {
   min-height: 40px;
 }
 
+.rbc-day-slot .rbc-time-slot {
+  border-top: 1px solid var(--border-dark) !important;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid var(--border-dark) !important;
+}
+
+.rbc-day-bg + .rbc-day-bg {
+  border-left: 1px solid var(--border-dark) !important;
+}
+
+.rbc-time-view-resources .rbc-time-gutter, 
+.rbc-time-view-resources .rbc-time-header-gutter {
+  border-right: 1px solid var(--border-dark) !important;
+}
+
+/* Columna de horas (izquierda) */
+.rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: 1px solid var(--border-dark) !important;
+}
+
+/* Estilo de las etiquetas de hora - Más vistosas */
+.rbc-time-slot .rbc-label {
+  color: var(--color-text-primary) !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.rbc-label {
+  color: var(--color-text-primary) !important;
+  font-weight: 600;
+}
+
+/* Indicador de hora actual */
 .rbc-current-time-indicator {
-  background-color: #ef4444;
+  background-color: var(--color-primary);
   height: 2px;
 }
 
+/* Día actual - Leve resalte */
 .rbc-today {
-  background-color: #eff6ff;
+  background-color: rgba(114, 124, 245, 0.05) !important; /* Primary con muy baja opacidad */
 }
 
+/* Eventos */
 .rbc-event {
   padding: 4px 8px;
   border-radius: 4px;
   border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .rbc-event:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
   transform: translateY(-1px);
   transition: all 0.2s;
+  opacity: 0.9;
 }
 
+.rbc-event-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+/* Toolbar (Botones de navegación) */
 .rbc-toolbar {
   padding: 16px;
-  background-color: #f9fafb;
+  background-color: var(--color-surface-dark);
   border-radius: 8px 8px 0 0;
   margin-bottom: 0;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.rbc-toolbar-label {
+  color: var(--color-text-primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Ensure button groups are flex containers to support gap */
+.rbc-toolbar .rbc-btn-group {
+  display: flex !important;
+  gap: 8px;
 }
 
 .rbc-toolbar button {
   padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background-color: white;
+  border-radius: 9999px !important; /* Fully rounded */
+  border: 1px solid var(--border-dark) !important;
+  background-color: var(--color-background-dark) !important;
+  color: var(--color-text-secondary) !important;
   font-weight: 500;
   transition: all 0.2s;
+  margin: 0 !important; /* Reset any default margins */
+}
+
+/* Force rounding on first and last children to override library defaults */
+.rbc-btn-group > button:first-child:not(:last-child),
+.rbc-btn-group > button:last-child:not(:first-child) {
+  border-radius: 9999px !important;
 }
 
 .rbc-toolbar button:hover {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
+  background-color: var(--border-dark) !important;
+  color: var(--color-text-primary) !important;
+  border-color: var(--color-text-secondary) !important;
 }
 
+.rbc-toolbar button:active, 
 .rbc-toolbar button.rbc-active {
-  background-color: #000000;
-  color: white;
-  border-color: #000000;
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 2px rgba(114, 124, 245, 0.3);
+}
+
+.rbc-toolbar button:focus {
+  outline: none;
+}
+
+/* Scrollbars para el calendario */
+.rbc-time-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.rbc-time-content::-webkit-scrollbar-track {
+  background: var(--color-background-dark);
+}
+.rbc-time-content::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 4px;
+}
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* Off range (fuera de rango) - e.g. mes anterior/siguiente en vista mes */
+.rbc-off-range-bg {
+  background-color: var(--color-background-dark) !important;
+}
+
+/* Eliminar bordes blancos por defecto de la librería */
+.rbc-time-header-content,
+.rbc-time-content,
+.rbc-time-column,
+.rbc-day-slot,
+.rbc-time-slot,
+.rbc-header {
+  border-color: var(--border-dark) !important;
+}
+
+/* Asegurar que los bordes verticales entre días sean grises */
+.rbc-time-column {
+  border-left: 1px solid var(--border-dark) !important;
+}
+
+/* Remover cualquier borde blanco del contenedor principal */
+.rbc-time-view,
+.rbc-time-header,
+.rbc-time-content > * > * {
+  border-color: var(--border-dark) !important;
+}
+
+/* Vista de Mes - Eliminar bordes blancos */
+.rbc-month-view,
+.rbc-month-view *,
+.rbc-month-row,
+.rbc-day-bg,
+.rbc-date-cell {
+  border-color: var(--border-dark) !important;
+}
+
+.rbc-month-view {
+  border: 1px solid var(--border-dark) !important;
+}
+
+/* Vista de Agenda - Eliminar bordes blancos */
+.rbc-agenda-view,
+.rbc-agenda-view table,
+.rbc-agenda-table,
+.rbc-agenda-table tbody > tr > td,
+.rbc-agenda-table thead > tr > th {
+  border-color: var(--border-dark) !important;
+}
+
+.rbc-agenda-view table {
+  border: none !important;
+}
+
+.rbc-agenda-table tbody > tr > td {
+  border-top: 1px solid var(--border-dark) !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.rbc-agenda-table thead > tr > th {
+  border-bottom: 2px solid var(--border-dark) !important;
+  border-left: none !important;
+  border-right: none !important;
 }

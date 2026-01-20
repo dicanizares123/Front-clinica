@@ -29,7 +29,6 @@ interface PaginatedResponse {
 export default function PatientsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
   const pageSize = 10;
 
   // Estados para modales
@@ -101,7 +100,7 @@ export default function PatientsPage() {
     <HomeLayout user={user}>
       <div className="flex flex-col gap-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex justify-between items-center">
           <div>
             <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
               Gestión de Pacientes
@@ -110,36 +109,29 @@ export default function PatientsPage() {
               Administra la información de los pacientes
             </p>
           </div>
-
-          {/* Botón crear paciente */}
-          <button
-            onClick={() => setIsCreateModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            <span className="material-symbols-outlined">person_add</span>
-            Nuevo Paciente
-          </button>
         </div>
 
         {/* Tabla de pacientes */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
           {isLoading ? (
             <div className="flex items-center justify-center h-64">
               <div className="flex flex-col items-center gap-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                <p className="text-gray-600">Cargando pacientes...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                <p className="text-text-secondary-light dark:text-text-secondary-dark">
+                  Cargando pacientes...
+                </p>
               </div>
             </div>
           ) : error ? (
             <div className="flex items-center justify-center h-64">
               <div className="flex flex-col items-center gap-4 text-center">
-                <span className="material-symbols-outlined text-5xl text-red-500">
+                <span className="material-symbols-outlined text-5xl text-error">
                   error
                 </span>
-                <p className="text-red-600">Error al cargar los pacientes</p>
+                <p className="text-error">Error al cargar los pacientes</p>
                 <button
                   onClick={() => mutate()}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                 >
                   Reintentar
                 </button>
@@ -156,8 +148,8 @@ export default function PatientsPage() {
               />
 
               {/* Paginación */}
-              <div className="flex items-center justify-between px-6 py-4 border-t">
-                <div className="text-sm text-gray-600">
+              <div className="flex items-center justify-between px-6 py-4 border-t border-[#323a46]">
+                <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
                   Mostrando{" "}
                   {patients.length > 0 ? (page - 1) * pageSize + 1 : 0} -{" "}
                   {Math.min(page * pageSize, totalCount)} de {totalCount}{" "}
@@ -168,7 +160,7 @@ export default function PatientsPage() {
                   <button
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
                   >
                     <span className="material-symbols-outlined text-sm">
                       chevron_left
@@ -191,10 +183,10 @@ export default function PatientsPage() {
                         <button
                           key={pageNum}
                           onClick={() => setPage(pageNum)}
-                          className={`px-3 py-1 rounded-lg ${
+                          className={`px-3 py-1 rounded-lg transition-colors ${
                             page === pageNum
-                              ? "bg-blue-600 text-white"
-                              : "hover:bg-gray-100"
+                              ? "bg-primary text-white"
+                              : "hover:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark"
                           }`}
                         >
                           {pageNum}
@@ -206,7 +198,7 @@ export default function PatientsPage() {
                   <button
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page >= totalPages}
-                    className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
                   >
                     <span className="material-symbols-outlined text-sm">
                       chevron_right

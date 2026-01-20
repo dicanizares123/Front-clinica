@@ -40,26 +40,34 @@ export default function PatientsTable({
     columnHelper.accessor("document_id", {
       header: "Cédula",
       cell: (info) => (
-        <span className="font-mono text-sm">{info.getValue()}</span>
+        <span className="font-mono text-sm text-text-light dark:text-text-dark">
+          {info.getValue()}
+        </span>
       ),
     }),
     columnHelper.accessor((row) => `${row.first_names} ${row.last_names}`, {
       id: "fullName",
       header: "Nombre Completo",
       cell: (info) => (
-        <span className="font-medium text-gray-900">{info.getValue()}</span>
+        <span className="font-medium text-text-light dark:text-text-dark">
+          {info.getValue()}
+        </span>
       ),
     }),
     columnHelper.accessor("email", {
       header: "Email",
       cell: (info) => (
-        <span className="text-gray-600">{info.getValue() || "-"}</span>
+        <span className="text-text-secondary-light dark:text-text-secondary-dark">
+          {info.getValue() || "-"}
+        </span>
       ),
     }),
     columnHelper.accessor("phone_number", {
       header: "Teléfono",
       cell: (info) => (
-        <span className="text-gray-600">{info.getValue() || "-"}</span>
+        <span className="text-text-secondary-light dark:text-text-secondary-dark">
+          {info.getValue() || "-"}
+        </span>
       ),
     }),
     columnHelper.display({
@@ -69,7 +77,7 @@ export default function PatientsTable({
         <div className="flex items-center gap-2">
           <button
             onClick={() => onView(row.original)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-text-secondary-light dark:text-text-secondary-dark hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
             title="Ver detalles"
           >
             <span className="material-symbols-outlined text-xl">
@@ -78,7 +86,7 @@ export default function PatientsTable({
           </button>
           <button
             onClick={() => onEdit(row.original)}
-            className="p-1.5 text-gray-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+            className="p-1.5 text-text-secondary-light dark:text-text-secondary-dark hover:text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors"
             title="Editar"
           >
             <span className="material-symbols-outlined text-xl">edit</span>
@@ -86,7 +94,7 @@ export default function PatientsTable({
           {isAdmin && (
             <button
               onClick={() => onDelete(row.original)}
-              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-1.5 text-text-secondary-light dark:text-text-secondary-dark hover:text-error hover:bg-error/10 rounded-lg transition-colors"
               title="Eliminar"
             >
               <span className="material-symbols-outlined text-xl">delete</span>
@@ -105,7 +113,7 @@ export default function PatientsTable({
 
   if (patients.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+      <div className="flex flex-col items-center justify-center h-64 text-text-secondary-light dark:text-text-secondary-dark">
         <span className="material-symbols-outlined text-6xl mb-4">
           person_off
         </span>
@@ -117,31 +125,37 @@ export default function PatientsTable({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead className="bg-gray-50 border-b">
+      <table className="w-full border-collapse">
+        <thead className="bg-surface-dark">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  className="px-6 py-3 text-left text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider border border-[#323a46]"
                 >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                 </th>
               ))}
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+            <tr
+              key={row.id}
+              className="hover:bg-surface-dark/50 transition-colors"
+            >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-6 py-4 whitespace-nowrap">
+                <td
+                  key={cell.id}
+                  className="px-6 py-4 whitespace-nowrap border border-[#323a46]"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

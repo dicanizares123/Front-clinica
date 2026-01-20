@@ -8,6 +8,8 @@ interface StatsCardProps {
   color: "blue" | "green" | "purple" | "orange";
   className?: string; // Permitir clases personalizadas
   titleClassName?: string;
+  onClick?: () => void;
+  clickable?: boolean;
 }
 
 export default function StatsCard({
@@ -18,12 +20,15 @@ export default function StatsCard({
   color,
   className = "",
   titleClassName = "text-text-secondary",
+  onClick,
+  clickable = false,
 }: StatsCardProps) {
   return (
     <div
+      onClick={onClick}
       className={`border border-[#323a46] p-4 rounded-md shadow flex items-center justify-between ${
         className || "bg-surface-dark"
-      }`}
+      } ${clickable ? "cursor-pointer hover:bg-[#323a46] transition-colors" : ""}`}
     >
       <div>
         {title && (
