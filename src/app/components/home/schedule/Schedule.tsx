@@ -5,7 +5,7 @@ import moment from "moment";
 import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./calendar-custom.css";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/app/fetcher";
 import AppointmentModal from "./AppointmentModal";
@@ -33,6 +33,7 @@ interface AppointmentEvent extends Event {
   doctor?: string;
   status?: string;
   notes?: string;
+  patient_phone?: string;
 }
 
 // Interfaz para la respuesta del backend
@@ -68,6 +69,17 @@ interface ScheduleProps {
 export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<View>("week");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  // Debounce para la búsqueda (espera 500ms después de que el usuario deje de escribir)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   // Estados para los modales
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -119,7 +131,9 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
     isLoading,
     mutate,
   } = useSWR<BackendAppointment[]>(
-    `/api/appointments/my-calendar/?start_date=${start_date}&end_date=${end_date}`,
+    debouncedSearchTerm
+      ? `/api/appointments/my-calendar/?search=${encodeURIComponent(debouncedSearchTerm)}`
+      : `/api/appointments/my-calendar/?start_date=${start_date}&end_date=${end_date}`,
     fetcher,
     {
       revalidateOnFocus: false, // No revalidar al enfocar la ventana
@@ -154,6 +168,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
         doctor: apt.specialty,
         status: apt.status,
         notes: apt.notes,
+        patient_phone: apt.patient_phone,
       };
     });
   }, [backendData, events]);
@@ -297,64 +312,178 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
         )}
       </div>
 
-      <div style={{ height: "700px" }}>
-        <Calendar
-          localizer={localizer}
-          events={appointments}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: "100%" }}
-          // Configuración de vista
-          defaultView="week"
-          view={currentView}
-          date={currentDate}
-          onNavigate={handleNavigate}
-          onView={handleViewChange}
-          views={["month", "week", "day", "agenda"]}
-          // Horario de trabajo
-          min={new Date(0, 0, 0, 7, 0)} // 7am
-          max={new Date(0, 0, 0, 23, 0)} // 11pm
-          // Paso de tiempo en minutos
-          step={30}
-          timeslots={2}
-          // Interactividad
-          selectable={false}
-          onSelectEvent={handleSelectEvent}
-          // Estilos personalizados
-          eventPropGetter={eventStyleGetter}
-          // Formato de fecha/hora
-          formats={{
-            timeGutterFormat: "HH:mm",
-            eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
-              `${localizer?.format(
-                start,
-                "HH:mm",
-                culture,
-              )} - ${localizer?.format(end, "HH:mm", culture)}`,
-            agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
-              `${localizer?.format(
-                start,
-                "HH:mm",
-                culture,
-              )} - ${localizer?.format(end, "HH:mm", culture)}`,
-          }}
-          // Mensajes en español
-          messages={{
-            next: "Siguiente",
-            previous: "Anterior",
-            today: "Hoy",
-            month: "Mes",
-            week: "Semana",
-            day: "Día",
-            agenda: "Agenda",
-            date: "Fecha",
-            time: "Hora",
-            event: "Evento",
-            noEventsInRange: "No hay eventos en este rango",
-            showMore: (total) => `+ Ver más (${total})`,
-          }}
-        />
+      {/* Barra de búsqueda */}
+      <div className="mb-4">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Buscar por nombre, apellido o cédula..."
+              className="w-full px-4 py-2 pl-10 bg-background-dark border border-[#323a46] rounded-lg text-text-primary placeholder-text-secondary focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+            <span className="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary">
+              search
+            </span>
+          </div>
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="px-4 py-2 bg-background-dark border border-[#323a46] rounded-lg text-text-secondary hover:text-text-primary hover:bg-[#323a46] transition-colors"
+              title="Limpiar búsqueda"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Vista de resultados de búsqueda */}
+      {debouncedSearchTerm ? (
+        <div className="space-y-3">
+          {appointments.length === 0 ? (
+            <div className="text-center py-12 text-text-secondary">
+              <span className="material-symbols-outlined text-5xl mb-2">
+                search_off
+              </span>
+              <p>
+                No se encontraron citas con &ldquo;{debouncedSearchTerm}&rdquo;
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="text-text-secondary text-sm mb-3">
+                {appointments.length} cita(s) encontrada(s)
+              </p>
+              {/* Vista tipo Agenda - Tabla */}
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead className="bg-background-dark">
+                    <tr>
+                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
+                        Fecha
+                      </th>
+                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
+                        Hora
+                      </th>
+                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
+                        Evento
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.map((apt) => {
+                      const bgColor =
+                        apt.type === "scheduled"
+                          ? "#f59e0b"
+                          : apt.type === "confirmed"
+                            ? "#10b981"
+                            : apt.type === "completed"
+                              ? "#6b7280"
+                              : "#ef4444";
+
+                      return (
+                        <tr
+                          key={apt.id}
+                          onClick={() => handleSelectEvent(apt)}
+                          className="cursor-pointer hover:bg-[#323a46] transition-colors"
+                          style={{ backgroundColor: bgColor }}
+                        >
+                          <td className="border border-[#323a46] px-4 py-3 text-white font-medium">
+                            {apt.start.toLocaleDateString("es-ES", {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </td>
+                          <td className="border border-[#323a46] px-4 py-3 text-white">
+                            {apt.start.toLocaleTimeString("es-ES", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                            {" - "}
+                            {apt.end.toLocaleTimeString("es-ES", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </td>
+                          <td className="border border-[#323a46] px-4 py-3 text-white">
+                            {apt.title}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Calendario */}
+          <div style={{ height: "700px" }}>
+            <Calendar
+              localizer={localizer}
+              events={appointments}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: "100%" }}
+              // Configuración de vista
+              defaultView="week"
+              view={currentView}
+              date={currentDate}
+              onNavigate={handleNavigate}
+              onView={handleViewChange}
+              views={["month", "week", "day", "agenda"]}
+              // Horario de trabajo
+              min={new Date(0, 0, 0, 7, 0)} // 7am
+              max={new Date(0, 0, 0, 23, 0)} // 11pm
+              // Paso de tiempo en minutos
+              step={30}
+              timeslots={2}
+              // Interactividad
+              selectable={false}
+              onSelectEvent={handleSelectEvent}
+              // Estilos personalizados
+              eventPropGetter={eventStyleGetter}
+              // Formato de fecha/hora
+              formats={{
+                timeGutterFormat: "HH:mm",
+                eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+                  `${localizer?.format(
+                    start,
+                    "HH:mm",
+                    culture,
+                  )} - ${localizer?.format(end, "HH:mm", culture)}`,
+                agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
+                  `${localizer?.format(
+                    start,
+                    "HH:mm",
+                    culture,
+                  )} - ${localizer?.format(end, "HH:mm", culture)}`,
+              }}
+              // Mensajes en español
+              messages={{
+                next: "Siguiente",
+                previous: "Anterior",
+                today: "Hoy",
+                month: "Mes",
+                week: "Semana",
+                day: "Día",
+                agenda: "Agenda",
+                date: "Fecha",
+                time: "Hora",
+                event: "Evento",
+                noEventsInRange: "No hay eventos en este rango",
+                showMore: (total) => `+ Ver más (${total})`,
+              }}
+            />
+          </div>
+        </>
+      )}
 
       {/* Leyenda */}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">

@@ -133,7 +133,7 @@ export default function AppointmentStatusChart({
     <div className="bg-surface-dark rounded-md shadow p-6 border border-[#323a46] h-full flex flex-col items-center">
       <div className="w-full flex justify-start mb-2">
         <h3 className="text-base font-semibold text-text-primary">
-          Dashboard Estado de Citas En Los Ultimos 6
+          Dashboard Estado de Citas En Los Ultimos 6 Meses
         </h3>
       </div>
 
