@@ -8,8 +8,18 @@ import { AuthActions } from "../../utils";
 const menuItems = [
   { icon: "home", label: "Inicio", href: "/home" },
   { icon: "calendar_today", label: "Calendario", href: "/home/calendar" },
+  {
+    href: "/home/sri",
+    label: "Serv. Rentas Internas",
+    imageSrc:
+      "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
+
+    className: "bg-white/80 text-black/70 hover:bg-white",
+  },
+
   { icon: "group", label: "Pacientes", href: "/home/patients" },
-  { icon: "receipt_long", label: "Facturas", href: "/home/invoices" },
+  /*   { icon: "receipt_long", label: "Facturas", href: "/home/invoices" },
+   */
 ];
 
 interface SidebarProps {
@@ -76,13 +86,27 @@ export default function Sidebar({ user }: SidebarProps) {
             className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
               isCollapsed ? "justify-center" : ""
             } ${
-              pathname === item.href
-                ? "bg-primary-light text-white"
-                : "text-gray-300 hover:bg-primary-light hover:text-white"
+              (item as any).className
+                ? (item as any).className
+                : pathname === item.href
+                  ? (item as any).activeClass
+                    ? (item as any).activeClass
+                    : "bg-primary-light text-white"
+                  : (item as any).hoverClass
+                    ? `text-gray-300 ${(item as any).hoverClass}`
+                    : "text-gray-300 hover:bg-primary-light hover:text-white"
             }`}
             title={isCollapsed ? item.label : ""}
           >
-            <span className="material-symbols-outlined">{item.icon}</span>
+            {(item as any).imageSrc ? (
+              <img
+                src={(item as any).imageSrc}
+                alt={item.label}
+                className="w-auto h-6 object-contain"
+              />
+            ) : (
+              <span className="material-symbols-outlined">{item.icon}</span>
+            )}
             {!isCollapsed && (
               <p className="text-sm font-medium leading-normal whitespace-nowrap">
                 {item.label}

@@ -5,7 +5,7 @@ interface StatsCardProps {
   value?: string | number;
   icon?: string;
   imageSrc?: string;
-  color: "blue" | "green" | "purple" | "orange";
+  color?: "blue" | "green" | "purple" | "orange";
   className?: string; // Permitir clases personalizadas
   titleClassName?: string;
   onClick?: () => void;

@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { useState } from "react";
 import { fetcher } from "@/app/fetcher";
 import StatsCard from "./StatsCard";
+import { useRouter } from "next/navigation";
 import AppointmentModal from "./AppointmentModal";
 import AddPatientModal from "./AddPatientModal";
 
@@ -24,6 +25,8 @@ export default function StatsGrid({ data }: StatsGridProps) {
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
 
   console.log("Patients data:", patientsData);
+
+  const router = useRouter();
 
   return (
     <>
@@ -51,9 +54,10 @@ export default function StatsGrid({ data }: StatsGridProps) {
         <StatsCard
           title="USA EL SERVICIO DE RENTA INTERNA ECUADOR EN UN MISMO LUGAR"
           imageSrc="https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png"
-          color="purple"
           className="bg-white/80"
           titleClassName="text-black/70"
+          onClick={() => router.push("/home/sri")}
+          clickable
         />
       </div>
 
