@@ -353,52 +353,82 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
             </div>
           ) : (
             <>
-              <p className="text-text-secondary text-sm mb-3">
+              <p className="text-text-secondary text-sm mb-4">
                 {appointments.length} cita(s) encontrada(s)
               </p>
-              {/* Vista tipo Agenda - Tabla */}
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead className="bg-background-dark">
-                    <tr>
-                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
-                        Fecha
-                      </th>
-                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
-                        Hora
-                      </th>
-                      <th className="border border-[#323a46] px-4 py-3 text-left text-text-primary font-semibold">
-                        Evento
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {appointments.map((apt) => {
-                      const bgColor =
-                        apt.type === "scheduled"
-                          ? "#f59e0b"
-                          : apt.type === "confirmed"
-                            ? "#10b981"
-                            : apt.type === "completed"
-                              ? "#6b7280"
-                              : "#ef4444";
+              {/* Vista tipo Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {appointments.map((apt) => {
+                  const bgColor =
+                    apt.type === "scheduled"
+                      ? "#f59e0b"
+                      : apt.type === "confirmed"
+                        ? "#10b981"
+                        : apt.type === "completed"
+                          ? "#6b7280"
+                          : "#ef4444";
 
-                      return (
-                        <tr
-                          key={apt.id}
-                          onClick={() => handleSelectEvent(apt)}
-                          className="cursor-pointer hover:bg-[#323a46] transition-colors"
-                          style={{ backgroundColor: bgColor }}
-                        >
-                          <td className="border border-[#323a46] px-4 py-3 text-white font-medium">
+                  const statusText =
+                    apt.type === "scheduled"
+                      ? "Programada"
+                      : apt.type === "confirmed"
+                        ? "Confirmada"
+                        : apt.type === "completed"
+                          ? "Completada"
+                          : "Cancelada";
+
+                  return (
+                    <div
+                      key={apt.id}
+                      onClick={() => handleSelectEvent(apt)}
+                      className="bg-surface-dark border border-[#323a46] rounded-lg p-5 cursor-pointer hover:border-primary transition-colors"
+                    >
+                      {/* Encabezado con icono y estado */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-primary text-3xl">
+                            event
+                          </span>
+                          <div>
+                            <h3 className="text-text-primary font-semibold text-base">
+                              {apt.title}
+                            </h3>
+                            <span
+                              className="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-white mt-1"
+                              style={{ backgroundColor: bgColor }}
+                            >
+                              {statusText}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Información de la cita */}
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2 text-text-secondary">
+                          <span className="material-symbols-outlined text-base">
+                            person
+                          </span>
+                          <span>{apt.patient}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-text-secondary">
+                          <span className="material-symbols-outlined text-base">
+                            calendar_today
+                          </span>
+                          <span>
                             {apt.start.toLocaleDateString("es-ES", {
                               weekday: "short",
                               day: "numeric",
                               month: "short",
                               year: "numeric",
                             })}
-                          </td>
-                          <td className="border border-[#323a46] px-4 py-3 text-white">
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-text-secondary">
+                          <span className="material-symbols-outlined text-base">
+                            schedule
+                          </span>
+                          <span>
                             {apt.start.toLocaleTimeString("es-ES", {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -408,15 +438,12 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}
-                          </td>
-                          <td className="border border-[#323a46] px-4 py-3 text-white">
-                            {apt.title}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}
@@ -437,7 +464,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
               date={currentDate}
               onNavigate={handleNavigate}
               onView={handleViewChange}
-              views={["month", "week", "day", "agenda"]}
+              views={["month", "week", "day"]}
               // Horario de trabajo
               min={new Date(0, 0, 0, 7, 0)} // 7am
               max={new Date(0, 0, 0, 23, 0)} // 11pm
