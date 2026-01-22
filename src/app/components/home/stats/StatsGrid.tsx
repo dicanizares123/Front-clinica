@@ -57,7 +57,6 @@ export default function StatsGrid({ data }: StatsGridProps) {
           className="bg-white/80"
           titleClassName="text-black/70"
           onClick={() => router.push("/home/sri")}
-          clickable
         />
       </div>
 
