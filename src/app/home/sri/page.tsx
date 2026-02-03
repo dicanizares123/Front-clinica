@@ -24,6 +24,16 @@ const invoiceService = {
   href: "/home/sri/invoice",
 };
 
+// Servicio de Historial de Facturas
+const viewInvoicesService = {
+  title: "Historial de Facturas",
+  description:
+    "Consulta y visualiza todas las facturas electrónicas emitidas con filtros y detalles.",
+  imageSrc:
+    "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
+  href: "/home/sri/view-invoices",
+};
+
 // Servicios del SRI
 const sriServices = [
   {
@@ -107,13 +117,23 @@ export default function SriPage() {
             <h2 className="text-text-primary text-lg font-semibold mb-4">
               Facturación Electrónica
             </h2>
-            <div className="w-fit">
-              <SriServiceCard
-                title={invoiceService.title}
-                description={invoiceService.description}
-                imageSrc={invoiceService.imageSrc}
-                href={invoiceService.href}
-              />
+            <div className="flex flex-wrap gap-6">
+              <div className="w-fit">
+                <SriServiceCard
+                  title={invoiceService.title}
+                  description={invoiceService.description}
+                  imageSrc={invoiceService.imageSrc}
+                  href={invoiceService.href}
+                />
+              </div>
+              <div className="w-fit">
+                <SriServiceCard
+                  title={viewInvoicesService.title}
+                  description={viewInvoicesService.description}
+                  imageSrc={viewInvoicesService.imageSrc}
+                  href={viewInvoicesService.href}
+                />
+              </div>
             </div>
           </div>
 

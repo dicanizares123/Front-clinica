@@ -110,16 +110,23 @@ export default function InvoicePage() {
   );
   const defaultProduct = productsData?.[0] || null;
 
-  // Cálculos del producto
+  // Función de redondeo a 2 decimales (usando toFixed para garantizar exactamente 2 decimales)
+  const round2 = (value: number): number => {
+    return Number(value.toFixed(2));
+  };
+
+  // Cálculos del producto (todos redondeados a 2 decimales para cumplir con el XSD del SRI)
   const productUnitValue = defaultProduct
-    ? parseFloat(defaultProduct.unit_price)
+    ? round2(parseFloat(defaultProduct.unit_price))
     : 0;
-  const productSubtotal = productUnitValue * productQuantity - productDiscount;
+  const productSubtotal = round2(
+    productUnitValue * productQuantity - productDiscount,
+  );
   const productIvaRate = 0.15; // 15% IVA
-  const productIva = productSubtotal * productIvaRate;
-  const totalSubtotal = productSubtotal;
-  const totalIva = productIva;
-  const totalFinal = totalSubtotal + totalIva;
+  const productIva = round2(productSubtotal * productIvaRate);
+  const totalSubtotal = round2(productSubtotal);
+  const totalIva = round2(productIva);
+  const totalFinal = round2(totalSubtotal + totalIva);
 
   const user = userData
     ? {
@@ -239,9 +246,9 @@ export default function InvoicePage() {
         {
           description: defaultProduct.description,
           mainCode: defaultProduct.code,
-          unitValue: productUnitValue,
+          unitValue: round2(productUnitValue),
           amount: productQuantity,
-          discount: productDiscount,
+          discount: round2(productDiscount),
           tariffCodeIva: "4", // 15% IVA
         },
       ];
@@ -271,7 +278,7 @@ export default function InvoicePage() {
         paymentMethods: [
           {
             type: paymentMethodType,
-            total: totalFinal,
+            total: round2(totalFinal),
             timeUnit: "dias",
             paymentTerm: paymentTerm,
           },
