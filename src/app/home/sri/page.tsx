@@ -1,8 +1,30 @@
 "use client";
 
+import useSWR from "swr";
+import { fetcher } from "@/app/fetcher";
 import HomeLayout from "@/app/components/layout/HomeLayout";
 import SriServiceCard from "@/app/components/sri/SriServiceCard";
 
+// Servicio de Olimpush
+const olimpushService = {
+  title: "Olimpush Validar Contribuyente",
+  description:
+    "Consulta un contribuyente registrado en Olimpush por su RUC y obtén información relevante.",
+  imageSrc: "https://developers.olimpush.com/assets/icons/unnamed.jpg",
+  href: "/home/sri/validate-contributor",
+};
+
+// Servicio de Facturación Electrónica
+const invoiceService = {
+  title: "Facturación Electrónica",
+  description:
+    "Genera y envía facturas electrónicas al SRI de manera rápida y sencilla.",
+  imageSrc:
+    "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
+  href: "/home/sri/invoice",
+};
+
+// Servicios del SRI
 const sriServices = [
   {
     title: "Validar RUC",
@@ -20,11 +42,34 @@ const sriServices = [
       "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
     href: "/home/sri/validate-establishments",
   },
+  {
+    title: "Detalles del RUC",
+    description:
+      "Consulta información detallada de un contribuyente por su RUC en el SRI.",
+    imageSrc:
+      "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
+    href: "/home/sri/ruc-details",
+  },
 ];
 
 export default function SriPage() {
+  // Obtener datos del usuario
+  const { data: userData } = useSWR("/auth/users/me/", fetcher);
+
+  const user = userData
+    ? {
+        username: userData.username || "Usuario",
+        email: userData.email || "",
+        role: userData.role_name || "Usuario",
+        uuid: userData.uuid || "",
+        first_names: userData.first_names || "",
+        last_names: userData.last_names || "",
+        permissions: userData.role || {},
+      }
+    : undefined;
+
   return (
-    <HomeLayout>
+    <HomeLayout user={user}>
       <div className="flex flex-col gap-6">
         {/* Header */}
         <div className="flex justify-between items-center">
@@ -39,17 +84,57 @@ export default function SriPage() {
           </div>
         </div>
 
-        {/* Grid de servicios */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {sriServices.map((service) => (
-            <SriServiceCard
-              key={service.href}
-              title={service.title}
-              description={service.description}
-              imageSrc={service.imageSrc}
-              href={service.href}
-            />
-          ))}
+        {/* Contenedor principal con estilo similar al calendario */}
+        <div className="bg-surface-dark rounded-xl shadow-lg border border-[#323a46] p-6 flex flex-col gap-8">
+          {/* Sección Olimpush */}
+          <div>
+            <h2 className="text-text-primary text-l font-semibold mb-4">
+              OlimpushAPI
+            </h2>
+
+            <div className="w-fit">
+              <SriServiceCard
+                title={olimpushService.title}
+                description={olimpushService.description}
+                imageSrc={olimpushService.imageSrc}
+                href={olimpushService.href}
+              />
+            </div>
+          </div>
+
+          {/* Sección Facturación Electrónica */}
+          <div>
+            <h2 className="text-text-primary text-lg font-semibold mb-4">
+              Facturación Electrónica
+            </h2>
+            <div className="w-fit">
+              <SriServiceCard
+                title={invoiceService.title}
+                description={invoiceService.description}
+                imageSrc={invoiceService.imageSrc}
+                href={invoiceService.href}
+              />
+            </div>
+          </div>
+
+          {/* Sección Servicios del SRI */}
+          <div>
+            <h2 className="text-text-primary text-lg font-semibold mb-4">
+              Servicios del SRI
+            </h2>
+            <div className="flex flex-wrap gap-6">
+              {sriServices.map((service) => (
+                <div key={service.href} className="w-fit">
+                  <SriServiceCard
+                    title={service.title}
+                    description={service.description}
+                    imageSrc={service.imageSrc}
+                    href={service.href}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </HomeLayout>

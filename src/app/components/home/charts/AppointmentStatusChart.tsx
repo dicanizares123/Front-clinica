@@ -52,7 +52,7 @@ const CustomTooltip = ({ active, payload, total }: CustomTooltipProps) => {
   return null;
 };
 
-// Componente de Leyenda (Renderizado manualmente fuera del gráfico para mejor control de espacio)
+// Componente de Leyenda (Renderizado al lado derecho del gráfico)
 const ChartLegend = ({
   data,
   total,
@@ -61,33 +61,22 @@ const ChartLegend = ({
   total: number;
 }) => {
   return (
-    <div className="flex flex-col gap-3 mt-8 w-full max-w-[300px] mx-auto">
-      {data.map((entry, index) => (
-        <div
-          key={`legend-${index}`}
-          className="flex items-center justify-between py-1 border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-white/5 px-2 rounded transition-colors"
-        >
-          <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-4">
+      {data.map((entry, index) => {
+        const percentage =
+          total > 0 ? ((entry.value / total) * 100).toFixed(0) : "0";
+        return (
+          <div key={`legend-${index}`} className="flex items-center gap-3">
             <div
-              className="w-3 h-3 rounded-full shadow-sm"
+              className="w-4 h-4 rounded-full flex-shrink-0 shadow-md"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark truncate max-w-[120px]">
-              {entry.name}
+            <span className="text-base font-medium text-text-secondary-light dark:text-text-secondary-dark whitespace-nowrap">
+              {entry.name} [{percentage}%]
             </span>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-medium text-gray-400 dark:text-gray-500 w-[35px] text-right">
-              {total > 0
-                ? `${((entry.value / total) * 100).toFixed(0)}%`
-                : "0%"}
-            </span>
-            <span className="text-sm font-bold text-text-primary dark:text-white font-mono min-w-[25px] text-right">
-              {entry.value}
-            </span>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
@@ -130,18 +119,16 @@ export default function AppointmentStatusChart({
   }
 
   return (
-    <div className="bg-surface-dark rounded-md shadow p-6 border border-[#323a46] h-full flex flex-col items-center">
-      <div className="w-full flex justify-start mb-2">
-        <h3 className="text-base font-semibold text-text-primary">
+    <div className="bg-surface-dark rounded-xl shadow-lg p-8 border border-[#323a46] h-full flex flex-col min-h-[400px]">
+      <div className="w-full flex justify-start mb-6">
+        <h3 className="text-xl font-bold text-text-primary">
           Dashboard Estado de Citas En Los Ultimos 6 Meses
         </h3>
       </div>
 
-      <div className="w-full flex-1 flex flex-col items-center">
+      <div className="w-full flex-1 flex items-center justify-center gap-16 min-h-0">
         {/* Contenedor del Gráfico */}
-        <div className="relative w-full h-[300px] flex-shrink-0">
-          {/* Eliminado el texto central 'Total' para gráfica sólida */}
-
+        <div className="relative h-full max-h-[500px] aspect-square">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -151,9 +138,9 @@ export default function AppointmentStatusChart({
                 startAngle={90}
                 endAngle={-270}
                 labelLine={false}
-                outerRadius={140} // Radio más grande para aprovechar espacio
-                innerRadius={0} // 0 para hacerla sólida (Pie Chart)
-                paddingAngle={0} // Sin separación para look sólido clásico
+                outerRadius="85%"
+                innerRadius={0}
+                paddingAngle={0}
                 dataKey="value"
                 isAnimationActive={true}
                 animationDuration={1000}
@@ -169,7 +156,7 @@ export default function AppointmentStatusChart({
           </ResponsiveContainer>
         </div>
 
-        {/* Lista de Leyenda Externa Centrada */}
+        {/* Leyenda al lado derecho */}
         <ChartLegend data={chartData} total={total} />
       </div>
     </div>

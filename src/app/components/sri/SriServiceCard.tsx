@@ -17,7 +17,7 @@ export default function SriServiceCard({
 }: SriServiceCardProps) {
   return (
     <Link href={href}>
-      <div className="bg-white/80 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer border border-gray-200 flex flex-col items-center text-center h-full">
+      <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer border border-gray-200 flex flex-col items-center text-center h-full">
         {/* Logo */}
         <div className="w-24 h-24 mb-4 flex items-center justify-center">
           <img

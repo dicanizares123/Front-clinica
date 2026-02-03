@@ -10,7 +10,7 @@ const menuItems = [
   { icon: "calendar_today", label: "Calendario", href: "/home/calendar" },
   {
     href: "/home/sri",
-    label: "Serv. Rentas Internas",
+    label: "",
     imageSrc:
       "https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png",
 

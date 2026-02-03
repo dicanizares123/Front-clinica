@@ -192,15 +192,38 @@ export default function AppointmentModal({
         `${API_BASE_URL}/patients/by_document/${cedulaValue}/`,
       );
       if (res.ok) {
-        const patient = (await res.json()) as Patient;
-        setValue("firstName", patient.first_names);
-        setValue("lastName", patient.last_names);
-        setValue("email", patient.email);
-        setValue("celular", patient.phone_number);
+        const data = await res.json();
+        console.log("Datos del paciente encontrado:", data);
+
+        // Acceder a la estructura correcta de la respuesta
+        const patient = data.data || data;
+
+        setValue("firstName", patient.first_names, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+        setValue("lastName", patient.last_names, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+        setValue("email", patient.email, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+        setValue("celular", patient.phone_number, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
         setValue("hasPriorAppointment", true);
+      } else {
+        console.log("Paciente no encontrado");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error buscando paciente:", error);
     }
   };
 
@@ -233,7 +256,10 @@ export default function AppointmentModal({
         );
         if (searchRes.ok) {
           const existing = await searchRes.json();
-          patientId = existing.id;
+          console.log("Paciente encontrado:", existing);
+          // Manejar estructura data.data o data
+          const patient = existing.data || existing;
+          patientId = patient.id;
         } else {
           const createRes = await fetch(`${API_BASE_URL}/patients/`, {
             method: "POST",
@@ -249,9 +275,13 @@ export default function AppointmentModal({
           });
           if (!createRes.ok) throw new Error("Error creando paciente");
           const newPatient = await createRes.json();
-          patientId = newPatient.id;
+          console.log("Paciente creado:", newPatient);
+          // Manejar estructura data.data o data
+          const patient = newPatient.data || newPatient;
+          patientId = patient.id;
         }
       } catch (e) {
+        console.error("Error procesando paciente:", e);
         throw new Error("Error procesando datos del paciente");
       }
 

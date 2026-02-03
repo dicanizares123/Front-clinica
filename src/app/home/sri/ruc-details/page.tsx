@@ -3,26 +3,37 @@
 import useSWR from "swr";
 import { fetcher } from "@/app/fetcher";
 import HomeLayout from "@/app/components/layout/HomeLayout";
-import { validateEstablishmentSRI } from "@/api/apiOlimpSri";
+import { getContributorDetailsSRI } from "@/api/apiOlimpSri";
 import { useState } from "react";
-import ResponseValidateEstablishment from "@/interfaces/ResponseValidateEstablishment";
+import { ResponseContributorDetails } from "@/interfaces/ResponseContributorDetails";
 import DataTable, { Column } from "@/app/components/shared/DataTable";
 
-interface Establishment {
-  numeroEstablecimiento: string;
-  nombreFantasiaComercial: string;
-  tipoEstablecimiento: string;
-  direccionCompleta: string;
-  estado: string;
-  matriz: string;
+interface ContributorRow {
+  numeroRuc: string;
+  razonSocial: string;
+  estadoContribuyente: string;
+  actividadEconomicaPrincipal: string;
+  tipoContribuyente: string;
+  regimen: string;
+  categoria: string;
+  obligadoLlevarContabilidad: string;
+  fechaInicioActividades: string;
+  fechaCese: string;
+  fechaReinicioActividades: string;
+  fechaActualizacion: string;
+  representantesLegales: string;
+  motivoCancelacionSuspension: string;
+  contribuyenteFantasma: string;
+  transaccionesInexistente: string;
 }
 
-export default function ValidateEstablishmentsPage() {
+export default function RucDetailsPage() {
   const [ruc, setRuc] = useState("");
   const [useDefaultRuc, setUseDefaultRuc] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] =
-    useState<ResponseValidateEstablishment | null>(null);
+  const [response, setResponse] = useState<ResponseContributorDetails | null>(
+    null,
+  );
 
   // Obtener datos del usuario
   const { data: userData } = useSWR("/auth/users/me/", fetcher);
@@ -54,10 +65,10 @@ export default function ValidateEstablishmentsPage() {
     setResponse(null);
 
     try {
-      const result = await validateEstablishmentSRI(rucToValidate);
+      const result = await getContributorDetailsSRI(rucToValidate);
       setResponse(result);
     } catch (err: any) {
-      console.error("Error al validar establecimientos:", err);
+      console.error("Error al consultar detalles del RUC:", err);
     } finally {
       setLoading(false);
     }
@@ -66,49 +77,98 @@ export default function ValidateEstablishmentsPage() {
   const isSuccess = response?.status === "OK" || response?.code === 200;
 
   // Definir columnas de la tabla
-  const columns: Column<Establishment>[] = [
+  const columns: Column<ContributorRow>[] = [
+    { key: "numeroRuc", header: "Número RUC", width: "150px" },
+    { key: "razonSocial", header: "Razón Social" },
     {
-      key: "numeroEstablecimiento",
-      header: "Número Establecimiento",
-      width: "200px",
+      key: "estadoContribuyente",
+      header: "Estado Contribuyente",
+      width: "150px",
     },
     {
-      key: "nombreFantasiaComercial",
-      header: "Nombre Comercial",
+      key: "actividadEconomicaPrincipal",
+      header: "Actividad Económica Principal",
+    },
+    { key: "tipoContribuyente", header: "Tipo Contribuyente", width: "150px" },
+    { key: "regimen", header: "Régimen", width: "120px" },
+    { key: "categoria", header: "Categoría", width: "120px" },
+    {
+      key: "obligadoLlevarContabilidad",
+      header: "Obligado Contabilidad",
+      width: "150px",
     },
     {
-      key: "tipoEstablecimiento",
-      header: "Tipo Establecimiento",
-      width: "200px",
+      key: "fechaInicioActividades",
+      header: "Fecha Inicio Actividades",
+      width: "180px",
+    },
+    { key: "fechaCese", header: "Fecha Cese Actividades", width: "150px" },
+    {
+      key: "fechaReinicioActividades",
+      header: "Fecha Reinicio Actividades",
+      width: "150px",
     },
     {
-      key: "direccionCompleta",
-      header: "Dirección Completa",
+      key: "fechaActualizacion",
+      header: "Fecha Actualización",
+      width: "180px",
+    },
+    { key: "representantesLegales", header: "Representantes Legales" },
+    {
+      key: "motivoCancelacionSuspension",
+      header: "Motivo Cancelación/Suspensión",
     },
     {
-      key: "estado",
-      header: "Estado",
-      width: "120px",
-      align: "center",
-      render: (value) => (
-        <span
-          className={`px-2 py-1 rounded text-xs font-medium ${
-            value === "ABIERTO"
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
-          }`}
-        >
-          {value}
-        </span>
-      ),
+      key: "contribuyenteFantasma",
+      header: "Contribuyente Fantasma",
+      width: "150px",
     },
     {
-      key: "matriz",
-      header: "Matriz",
-      width: "100px",
-      align: "center",
+      key: "transaccionesInexistente",
+      header: "Transacciones Inexistentes",
+      width: "180px",
     },
   ];
+
+  // Preparar datos para la tabla
+  const tableData: ContributorRow[] =
+    response && response.data && response.data.length > 0
+      ? [
+          {
+            numeroRuc: response.data[0].numeroRuc || "-",
+            razonSocial: response.data[0].razonSocial || "-",
+            estadoContribuyente: response.data[0].estadoContribuyenteRuc || "-",
+            actividadEconomicaPrincipal:
+              response.data[0].actividadEconomicaPrincipal || "-",
+            tipoContribuyente: response.data[0].tipoContribuyente || "-",
+            regimen: response.data[0].regimen || "-",
+            categoria: response.data[0].categoria || "-",
+            obligadoLlevarContabilidad:
+              response.data[0].obligadoLlevarContabilidad || "-",
+            fechaInicioActividades:
+              response.data[0].informacionFechasContribuyente
+                ?.fechaInicioActividades || "-",
+            fechaCese:
+              response.data[0].informacionFechasContribuyente?.fechaCese || "-",
+            fechaReinicioActividades:
+              response.data[0].informacionFechasContribuyente
+                ?.fechaReinicioActividades || "-",
+            fechaActualizacion:
+              response.data[0].informacionFechasContribuyente
+                ?.fechaActualizacion || "-",
+            representantesLegales:
+              response.data[0].representantesLegales
+                ?.map((r) => `${r.nombre} (${r.identificacion})`)
+                .join(", ") || "-",
+            motivoCancelacionSuspension:
+              response.data[0].motivoCancelacionSuspension || "-",
+            contribuyenteFantasma:
+              response.data[0].contribuyenteFantasma || "-",
+            transaccionesInexistente:
+              response.data[0].transaccionesInexistente || "-",
+          },
+        ]
+      : [];
 
   return (
     <HomeLayout user={user}>
@@ -117,10 +177,11 @@ export default function ValidateEstablishmentsPage() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
-              Validar Establecimientos
+              Detalles del Contribuyente
             </h1>
             <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
-              Consulta los establecimientos registrados de un RUC en el SRI.
+              Consulta información detallada de un contribuyente por su RUC en
+              el SRI.
             </p>
           </div>
         </div>
@@ -204,13 +265,13 @@ export default function ValidateEstablishmentsPage() {
             </button>
           </div>
 
-          {/* Tabla de establecimientos */}
-          {response && response.data && response.data.length > 0 && (
+          {/* Tabla de detalles */}
+          {tableData.length > 0 && (
             <DataTable
               columns={columns}
-              data={response.data}
-              keyExtractor={(row, index) => index.toString()}
-              emptyMessage="No hay establecimientos registrados"
+              data={tableData}
+              keyExtractor={(_, index) => index.toString()}
+              emptyMessage="No hay información disponible"
               hoverable
             />
           )}

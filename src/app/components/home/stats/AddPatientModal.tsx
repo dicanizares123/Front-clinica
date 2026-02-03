@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../shared/Button";
 
@@ -14,14 +14,30 @@ type FormData = {
   email: string;
 };
 
+interface Patient {
+  id?: number;
+  first_names: string;
+  last_names: string;
+  document_id: string;
+  email: string;
+  phone_number: string;
+  address?: string;
+}
+
 interface AddPatientModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
+  patient?: Patient | null;
+  mode?: "create" | "edit";
 }
 
 export default function AddPatientModal({
   isOpen,
   onClose,
+  onSuccess,
+  patient,
+  mode = "create",
 }: AddPatientModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,37 +45,83 @@ export default function AddPatientModal({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
+
+  // Cargar datos del paciente cuando se abre en modo edición
+  useEffect(() => {
+    if (isOpen && mode === "edit" && patient) {
+      setValue("cedula", patient.document_id || "");
+      setValue("firstName", patient.first_names || "");
+      setValue("lastName", patient.last_names || "");
+      setValue("celular", patient.phone_number || "");
+      setValue("email", patient.email || "");
+    } else if (isOpen && mode === "create") {
+      reset();
+    }
+  }, [isOpen, mode, patient, setValue, reset]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/patients/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          first_names: data.firstName,
-          last_names: data.lastName,
-          document_id: data.cedula,
-          email: data.email,
-          phone_number: data.celular,
-        }),
-      });
+      const payload = {
+        first_names: data.firstName,
+        last_names: data.lastName,
+        document_id: data.cedula,
+        email: data.email,
+        phone_number: data.celular,
+      };
+
+      let response;
+
+      if (mode === "edit" && patient?.id) {
+        // Modo edición: PATCH
+        response = await fetch(`${API_BASE_URL}/patients/${patient.id}/`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
+      } else {
+        // Modo creación: POST
+        response = await fetch(`${API_BASE_URL}/patients/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
+      }
 
       if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.detail || "Error al crear el paciente");
+        throw new Error(
+          errData.detail ||
+            `Error al ${mode === "edit" ? "actualizar" : "crear"} el paciente`,
+        );
       }
 
-      const patient = await response.json();
-      alert(
-        `¡Paciente creado con éxito!\nID: ${patient.id}\nNombre: ${patient.first_names} ${patient.last_names}`,
-      );
+      const result = await response.json();
+
+      if (mode === "edit") {
+        alert(
+          `¡Paciente actualizado con éxito!\nNombre: ${result.first_names} ${result.last_names}`,
+        );
+      } else {
+        alert(
+          `¡Paciente creado con éxito!\nID: ${result.id}\nNombre: ${result.first_names} ${result.last_names}`,
+        );
+      }
+
       reset();
       onClose();
-      window.location.reload(); // Refresh to update patient count
+
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        window.location.reload();
+      }
     } catch (error: any) {
       alert(error.message || "Ocurrió un error inesperado");
     } finally {
@@ -73,6 +135,17 @@ export default function AddPatientModal({
   };
 
   if (!isOpen) return null;
+
+  const isEditMode = mode === "edit";
+  const title = isEditMode ? "Editar Paciente" : "Añadir Nuevo Paciente";
+  const subtitle = isEditMode
+    ? "Modifique los datos del paciente."
+    : "Complete los datos del nuevo paciente.";
+  const buttonText = isSubmitting
+    ? "Guardando..."
+    : isEditMode
+      ? "Actualizar Paciente"
+      : "Guardar Paciente";
 
   return (
     <>
@@ -91,9 +164,7 @@ export default function AddPatientModal({
           <div className="p-6 sm:p-8">
             {/* Header with close button */}
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-text-primary text-2xl font-bold">
-                Añadir Nuevo Paciente
-              </h2>
+              <h2 className="text-text-primary text-2xl font-bold">{title}</h2>
               <button
                 onClick={handleClose}
                 className="text-text-secondary hover:text-text-primary transition-colors"
@@ -103,7 +174,7 @@ export default function AddPatientModal({
             </div>
 
             <p className="text-text-secondary text-sm text-center mb-6">
-              Complete los datos del nuevo paciente.
+              {subtitle}
             </p>
 
             <form
@@ -198,9 +269,7 @@ export default function AddPatientModal({
 
               <div className="flex justify-end mt-6">
                 <Button
-                  textButton={
-                    isSubmitting ? "Guardando..." : "Guardar Paciente"
-                  }
+                  textButton={buttonText}
                   type="submit"
                   disabled={isSubmitting}
                 />

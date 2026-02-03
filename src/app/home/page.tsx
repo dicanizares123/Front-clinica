@@ -39,19 +39,17 @@ export default function Home() {
         }
       />
 
-      {/* Row 1: Stats */}
-      <div className="mb-6 flex justify-center w-full px-4">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <div className="flex flex-col gap-6 h-full flex-1">
+        {/* Row 1: Stats */}
+        <div>
           <h2 className="text-text-primary text-xl font-semibold mb-4">
             Acciones Rápidas
           </h2>
           <StatsGrid />
         </div>
-      </div>
 
-      {/* Row 2: Appointment Status Chart (Centered) */}
-      <div className="flex justify-center mb-6 w-full px-4">
-        <div className="w-full max-w-[1400px] mx-auto h-auto">
+        {/* Row 2: Appointment Status Chart */}
+        <div className="flex-1 min-h-0">
           <AppointmentStatusChart />
         </div>
       </div>

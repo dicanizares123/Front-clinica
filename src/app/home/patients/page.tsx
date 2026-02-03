@@ -4,8 +4,8 @@ import { useState, useCallback } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/app/fetcher";
 import HomeLayout from "@/app/components/layout/HomeLayout";
-import PatientsTable from "@/app/components/patients/PatientsTable";
-import PatientModal from "@/app/components/patients/PatientModal";
+import DataTable, { Column } from "@/app/components/shared/DataTable";
+import AddPatientModal from "@/app/components/home/stats/AddPatientModal";
 import DeletePatientModal from "@/app/components/patients/DeletePatientModal";
 
 interface Patient {
@@ -96,6 +96,61 @@ export default function PatientsPage() {
     mutate();
   }, [mutate]);
 
+  // Definir columnas de la tabla
+  const columns: Column<Patient>[] = [
+    {
+      key: "document_id",
+      header: "Cédula",
+      width: "150px",
+      render: (value) => <span className="font-mono text-sm">{value}</span>,
+    },
+    {
+      key: "full_name",
+      header: "Nombre Completo",
+      render: (_, row) => (
+        <span className="font-medium">
+          {row.first_names} {row.last_names}
+        </span>
+      ),
+    },
+    {
+      key: "email",
+      header: "Email",
+      render: (value) => value || "-",
+    },
+    {
+      key: "phone_number",
+      header: "Teléfono",
+      render: (value) => value || "-",
+    },
+    {
+      key: "actions",
+      header: "Acciones",
+      align: "center",
+      width: "150px",
+      render: (_, row) => (
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={() => handleEdit(row)}
+            className="p-1.5 text-text-secondary-light hover:text-amber-500 hover:bg-amber-500/10 rounded-lg transition-colors"
+            title="Editar"
+          >
+            <span className="material-symbols-outlined text-xl">edit</span>
+          </button>
+          {isAdmin && (
+            <button
+              onClick={() => handleDelete(row)}
+              className="p-1.5 text-text-secondary-light hover:text-error hover:bg-error/10 rounded-lg transition-colors"
+              title="Eliminar"
+            >
+              <span className="material-symbols-outlined text-xl">delete</span>
+            </button>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <HomeLayout user={user}>
       <div className="flex flex-col gap-6">
@@ -139,12 +194,12 @@ export default function PatientsPage() {
             </div>
           ) : (
             <>
-              <PatientsTable
-                patients={patients}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onView={handleView}
-                isAdmin={isAdmin}
+              <DataTable
+                columns={columns}
+                data={patients}
+                keyExtractor={(row) => row.id.toString()}
+                emptyMessage="No hay pacientes registrados"
+                hoverable
               />
 
               {/* Paginación */}
@@ -211,16 +266,8 @@ export default function PatientsPage() {
         </div>
       </div>
 
-      {/* Modal crear paciente */}
-      <PatientModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onSuccess={handleSuccess}
-        mode="create"
-      />
-
       {/* Modal editar paciente */}
-      <PatientModal
+      <AddPatientModal
         isOpen={isEditModalOpen}
         onClose={() => {
           setIsEditModalOpen(false);
@@ -229,7 +276,6 @@ export default function PatientsPage() {
         onSuccess={handleSuccess}
         patient={selectedPatient}
         mode="edit"
-        isAdmin={isAdmin}
       />
 
       {/* Modal eliminar paciente */}
