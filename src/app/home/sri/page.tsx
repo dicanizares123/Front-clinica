@@ -7,7 +7,7 @@ import SriServiceCard from "@/app/components/sri/SriServiceCard";
 
 // Servicio de Olimpush
 const olimpushService = {
-  title: "Olimpush Validar Contribuyente",
+  title: "Olimpush Servicios",
   description:
     "Consulta un contribuyente registrado en Olimpush por su RUC y obtén información relevante.",
   imageSrc: "https://developers.olimpush.com/assets/icons/unnamed.jpg",
@@ -100,12 +100,13 @@ export default function SriPage() {
             OlimpushAPI
           </h2>
 
-          <div className="w-fit">
+          <div className="w-full">
             <SriServiceCard
               title={olimpushService.title}
               description={olimpushService.description}
               imageSrc={olimpushService.imageSrc}
               href={olimpushService.href}
+              fullWidth
             />
           </div>
         </div>
@@ -115,23 +116,19 @@ export default function SriPage() {
           <h2 className="text-gray-900 text-lg font-semibold mb-4">
             Facturación Electrónica
           </h2>
-          <div className="flex flex-wrap gap-6">
-            <div className="w-fit">
-              <SriServiceCard
-                title={invoiceService.title}
-                description={invoiceService.description}
-                imageSrc={invoiceService.imageSrc}
-                href={invoiceService.href}
-              />
-            </div>
-            <div className="w-fit">
-              <SriServiceCard
-                title={viewInvoicesService.title}
-                description={viewInvoicesService.description}
-                imageSrc={viewInvoicesService.imageSrc}
-                href={viewInvoicesService.href}
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <SriServiceCard
+              title={invoiceService.title}
+              description={invoiceService.description}
+              imageSrc={invoiceService.imageSrc}
+              href={invoiceService.href}
+            />
+            <SriServiceCard
+              title={viewInvoicesService.title}
+              description={viewInvoicesService.description}
+              imageSrc={viewInvoicesService.imageSrc}
+              href={viewInvoicesService.href}
+            />
           </div>
         </div>
 
@@ -140,16 +137,15 @@ export default function SriPage() {
           <h2 className="text-gray-900 text-lg font-semibold mb-4">
             Servicios del SRI
           </h2>
-          <div className="flex flex-wrap gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {sriServices.map((service) => (
-              <div key={service.href} className="w-fit">
-                <SriServiceCard
-                  title={service.title}
-                  description={service.description}
-                  imageSrc={service.imageSrc}
-                  href={service.href}
-                />
-              </div>
+              <SriServiceCard
+                key={service.href}
+                title={service.title}
+                description={service.description}
+                imageSrc={service.imageSrc}
+                href={service.href}
+              />
             ))}
           </div>
         </div>

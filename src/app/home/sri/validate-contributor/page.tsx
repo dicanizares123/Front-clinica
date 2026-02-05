@@ -253,7 +253,7 @@ export default function ValidateContributorPage() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-gray-900 text-2xl font-bold leading-tight">
-              Servicios Olimpush
+              Olimpush Servicios
             </h1>
             <p className="text-gray-600 text-sm">
               Gestiona tu suscripción, contribuyente y firma electrónica.
