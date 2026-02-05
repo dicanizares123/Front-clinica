@@ -59,21 +59,54 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-surface-light p-6 sm:p-12">
-        <div className="flex flex-col w-full max-w-md">
-          <div className="mb-6 flex w-full justify-center mb-8 ">
-            <div className="h-10 w-10">
-              <span className="material-symbols-outlined !text-[60px]">
-                shield_with_heart
-              </span>
-            </div>
+    <div className="flex min-h-screen" style={{ backgroundColor: "#f3f3ff" }}>
+      {/* Panel Izquierdo - Información */}
+      <div className="hidden lg:flex lg:w-2/3 bg-[#262a37] p-12 flex-col justify-center items-center">
+        <div className="max-w-md text-center">
+          <div className="mb-8 flex justify-center">
+            <span className="material-symbols-outlined !text-[60px] text-white">
+              shield_with_heart
+            </span>
           </div>
-          <h1 className="text-text-primary tracking-tight text-3xl font-bold leading-tight text-center pb-4">
-            Centro Psicológico Atrévete
+
+          <h1 className="text-white text-4xl font-bold mb-6">
+            Centro Psicológico
+            <br />
+            Atrévete
           </h1>
 
-          <p className="text-text-secondary text-base font-normal leading-normal text-center pb-8">
+          <div className="space-y-4 text-left">
+            <div className="flex items-center gap-3 text-gray-300">
+              <span className="material-symbols-outlined">check_circle</span>
+              <span>Gestión de pacientes</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300">
+              <span className="material-symbols-outlined">check_circle</span>
+              <span>Agenda de citas online</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300">
+              <span className="material-symbols-outlined">check_circle</span>
+              <span>Facturación electrónica</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-300">
+              <span className="material-symbols-outlined">check_circle</span>
+              <span>Estadísticas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Panel Derecho - Formulario */}
+      <div className="w-full lg:w-1/3 flex items-center justify-center p-6 sm:p-12">
+        <div className="flex flex-col w-full max-w-md">
+          <div className="lg:hidden mb-8 flex justify-center">
+            <span className="material-symbols-outlined !text-[60px] text-[#262a37]">
+              shield_with_heart
+            </span>
+          </div>
+
+          <h2 className="text-gray-900 text-3xl font-bold mb-2">Login</h2>
+          <p className="text-gray-600 text-sm mb-8">
             Ingresa tus credenciales para acceder a tu cuenta.
           </p>
 
@@ -83,81 +116,80 @@ const Login = () => {
             autoComplete="off"
           >
             {/* Username Field */}
-            <div className="flex flex-wrap items-end gap-4">
-              <label className="flex flex-col min-w-40 flex-1">
-                <p className="text-text-primary text-sm font-medium leading-normal pb-2">
-                  Nombre de usuario
-                </p>
-                <input
-                  {...register("username", { required: true })}
-                  className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-[#323a46] bg-surface-dark focus:border-primary h-12 placeholder:text-text-secondary p-4 shadow text-base font-normal leading-normal"
-                  placeholder="Ingresa tu nombre de usuario"
-                />
-                {errors.username && (
-                  <span className="text-xs text-red-600 mt-1">
-                    El nombre de usuario es requerido
-                  </span>
-                )}
+            <div className="flex flex-col">
+              <label className="text-gray-700 text-sm font-medium mb-2">
+                Nombre de usuario
               </label>
+              <input
+                {...register("username", { required: true })}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#9098f8] focus:border-transparent placeholder:text-gray-400"
+                placeholder="Ingresa tu nombre de usuario"
+              />
+              {errors.username && (
+                <span className="text-xs text-red-600 mt-1">
+                  El nombre de usuario es requerido
+                </span>
+              )}
             </div>
 
             {/* Password Field */}
-            <div className="flex flex-wrap items-end gap-4">
-              <label className="flex flex-col min-w-40 flex-1">
-                <div className="flex justify-between items-baseline">
-                  <p className="text-text-primary text-sm font-medium leading-normal pb-2">
-                    Contraseña
-                  </p>
-                  <a
-                    className="text-primary text-sm font-medium leading-normal underline hover:text-blue-400 transition-colors"
-                    onClick={handleResetPassword}
-                  >
-                    Olvidé mi contraseña
-                  </a>
-                </div>
-                <div className="relative flex w-full flex-1 items-stretch rounded-lg">
-                  <input
-                    {...register("password", { required: true })}
-                    type={showPassword ? "text" : "password"}
-                    className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-md text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 border border-[#323a46] bg-surface-dark focus:border-primary h-12 placeholder:text-text-secondary p-4 shadow text-base font-normal leading-normal pr-12"
-                    placeholder="Ingresa tu contraseña"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    aria-label="Toggle password visibility"
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-text-secondary"
-                  >
-                    <span className="material-symbols-outlined">
-                      {showPassword ? "visibility" : "visibility_off"}
-                    </span>
-                  </button>
-                </div>
-                {errors.password && (
-                  <span className="text-xs text-red-600 mt-1">
-                    La contraseña es requerida
+            <div className="flex flex-col">
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-gray-700 text-sm font-medium">
+                  Contraseña
+                </label>
+                <a
+                  className="text-[#9098f8] text-xs font-medium hover:underline cursor-pointer"
+                  onClick={handleResetPassword}
+                >
+                  Olvidé mi contraseña
+                </a>
+              </div>
+              <div className="relative">
+                <input
+                  {...register("password", { required: true })}
+                  type={showPassword ? "text" : "password"}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#9098f8] focus:border-transparent placeholder:text-gray-400 pr-12"
+                  placeholder="Ingresa tu contraseña"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                >
+                  <span className="material-symbols-outlined text-xl">
+                    {showPassword ? "visibility" : "visibility_off"}
                   </span>
-                )}
-              </label>
+                </button>
+              </div>
+              {errors.password && (
+                <span className="text-xs text-red-600 mt-1">
+                  La contraseña es requerida
+                </span>
+              )}
             </div>
 
             {/* Error Message */}
             {errors.root && (
-              <span className="text-xs text-red-600 text-center">
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
                 {errors.root.message}
-              </span>
+              </div>
             )}
 
             {/* Submit Button */}
-            <div className="flex py-6 justify-center">
-              <Button textButton="Iniciar Sesión" type="submit" />
-            </div>
+            <button
+              type="submit"
+              className="w-full bg-[#9098f8] hover:bg-[#7a82e8] text-white font-semibold py-3 px-4 rounded-lg transition-colors mt-2"
+            >
+              Iniciar Sesión
+            </button>
           </form>
 
-          {/* <p className="text-text-secondary text-sm font-normal leading-normal text-center">
+          {/* <p className="text-gray-600 text-sm text-center mt-6">
             ¿No tienes una cuenta?{" "}
             <a
-              className="font-medium text-primary underline hover:text-blue-400 transition-colors"
+              className="font-medium text-[#9098f8] hover:underline"
               href="/auth/register"
             >
               Regístrate

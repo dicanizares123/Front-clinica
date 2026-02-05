@@ -68,7 +68,7 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
     fetcher,
     {
       refreshInterval: 30000,
-    }
+    },
   );
 
   const unreadCount = countData?.count || 0;
@@ -84,7 +84,7 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
         console.error("Error marking notification as read:", err);
       }
     },
-    [mutate, mutateCount]
+    [mutate, mutateCount],
   );
 
   // Mark all as read
@@ -99,11 +99,11 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
   }, [mutate, mutateCount]);
 
   return (
-    <div className="bg-surface-dark p-6 rounded-md shadow border border-[#323a46] flex flex-col h-full">
+    <div className="bg-white p-6 rounded-md shadow-lg border border-gray-200 flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-text-primary text-base font-semibold leading-tight tracking-[-0.015em]">
+          <h2 className="text-gray-900 text-base font-semibold leading-tight tracking-[-0.015em]">
             Notifications
           </h2>
           {unreadCount > 0 && (
@@ -115,10 +115,10 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
         {notifications && notifications.length > 0 && (
           <button
             onClick={handleMarkAllAsRead}
-            className="text-xs text-blue-500 hover:text-blue-400 font-medium hover:underline"
+            className="text-xs font-medium hover:underline"
+            style={{ color: '#9098f8' }}
           >
             Mark all read
-
           </button>
         )}
       </div>
@@ -130,7 +130,7 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
       >
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: '#9098f8' }}></div>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-8 text-gray-500">
@@ -140,7 +140,8 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
             <p className="text-sm">Error al cargar notificaciones</p>
             <button
               onClick={() => mutate()}
-              className="mt-2 text-xs text-blue-600 hover:underline"
+              className="mt-2 text-xs hover:underline"
+              style={{ color: '#9098f8' }}
             >
               Reintentar
             </button>
@@ -152,9 +153,10 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
               <div
                 key={notification.id}
                 onClick={() => handleMarkAsRead(notification.id)}
-                className={`flex items-start gap-3 p-3 rounded-lg bg-background-dark border border-[#323a46] transition-all cursor-pointer hover:bg-[#323a46] ${
-                  !notification.is_read ? "border-l-4 border-l-blue-500" : ""
+                className={`flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200 transition-all cursor-pointer hover:bg-gray-100 ${
+                  !notification.is_read ? "border-l-4" : ""
                 }`}
+                style={!notification.is_read ? { borderLeftColor: '#9098f8' } : {}}
               >
                 <div
                   className={`${style.color} p-2 rounded-full flex-shrink-0`}
@@ -165,17 +167,17 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-medium text-text-primary truncate">
+                    <p className="text-sm font-medium text-gray-900 truncate">
                       {notification.title}
                     </p>
                     {!notification.is_read && (
-                      <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1.5"></span>
+                      <span className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ backgroundColor: '#9098f8' }}></span>
                     )}
                   </div>
-                  <p className="text-xs text-text-secondary mt-0.5 line-clamp-2">
+                  <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">
                     {notification.message}
                   </p>
-                  <p className="text-xs text-text-secondary mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     {notification.time_ago}
                   </p>
                 </div>
@@ -183,7 +185,7 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
             );
           })
         ) : (
-          <div className="flex flex-col items-center justify-center py-8 text-text-secondary">
+          <div className="flex flex-col items-center justify-center py-8 text-gray-600">
             <span className="material-symbols-outlined text-5xl mb-2">
               notifications_off
             </span>
@@ -201,11 +203,11 @@ export default function PendingTask({ maxHeight = "400px" }: PendingTaskProps) {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #464f5b;
+          background-color: #d1d5db;
           border-radius: 3px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: #5d6878;
+          background-color: #9ca3af;
         }
       `}</style>
     </div>

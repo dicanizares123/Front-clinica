@@ -71,7 +71,7 @@ const ChartLegend = ({
               className="w-4 h-4 rounded-full flex-shrink-0 shadow-md"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-base font-medium text-text-secondary-light dark:text-text-secondary-dark whitespace-nowrap">
+            <span className="text-base font-medium text-gray-700 whitespace-nowrap">
               {entry.name} [{percentage}%]
             </span>
           </div>
@@ -110,8 +110,8 @@ export default function AppointmentStatusChart({
 
   if (!mounted || isLoading) {
     return (
-      <div className="bg-card-light dark:bg-card-dark p-6 rounded-xl shadow-xl h-full flex items-center justify-center min-h-[400px]">
-        <div className="animate-pulse text-text-secondary-light">
+      <div className="bg-white p-6 rounded-xl shadow-sm h-full flex items-center justify-center min-h-[400px] border border-gray-200">
+        <div className="animate-pulse text-gray-600">
           {isLoading ? "Cargando datos..." : "Cargando gráfica..."}
         </div>
       </div>
@@ -119,9 +119,9 @@ export default function AppointmentStatusChart({
   }
 
   return (
-    <div className="bg-surface-dark rounded-xl shadow-lg p-8 border border-[#323a46] h-full flex flex-col min-h-[400px]">
+    <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-200 h-full flex flex-col min-h-[400px]">
       <div className="w-full flex justify-start mb-6">
-        <h3 className="text-xl font-bold text-text-primary">
+        <h3 className="text-xl font-bold text-gray-800">
           Dashboard Estado de Citas En Los Ultimos 6 Meses
         </h3>
       </div>

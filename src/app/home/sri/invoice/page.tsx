@@ -338,103 +338,103 @@ export default function InvoicePage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
+            <h1 className="text-gray-900 text-2xl font-bold leading-tight">
               Crear Factura Electrónica
             </h1>
-            <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+            <p className="text-gray-600 text-sm">
               Genera y autoriza facturas electrónicas en el SRI.
             </p>
           </div>
         </div>
 
         {/* Datos del Emisor */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-          <h2 className="text-text-light text-lg font-bold mb-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h2 className="text-gray-900 text-lg font-bold mb-4">
             Datos del Emisor
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* RUC */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 RUC del Emisor
               </label>
               <input
                 type="text"
                 value={businessRuc || "No hay RUC configurado"}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Razón Social */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Razón Social *
               </label>
               <input
                 type="text"
                 value={socialReason}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Nombre Comercial */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre Comercial
               </label>
               <input
                 type="text"
                 value={commercialName}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Dirección Matriz */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Dirección Matriz *
               </label>
               <input
                 type="text"
                 value={mainAddress}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Código Establecimiento */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Cód. Establecimiento
               </label>
               <input
                 type="text"
                 value={establishmentCode}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Punto de Emisión */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Punto de Emisión
               </label>
               <input
                 type="text"
                 value={pointCode}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Secuencial */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Secuencial *
               </label>
               <div className="flex gap-2">
@@ -443,12 +443,12 @@ export default function InvoicePage() {
                   value={sequentialDocument}
                   disabled
                   placeholder="Generar secuencial"
-                  className="flex-1 px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                  className="flex-1 px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
                 />
                 <button
                   onClick={handleGenerarSecuencial}
                   disabled={loadingSecuencial || !!sequentialDocument}
-                  className="px-4 py-2 bg-primary-light hover:bg-primary-dark text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm whitespace-nowrap"
+                  className="px-4 py-2 bg-[#9098f8] hover:bg-[#7a82e8] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm whitespace-nowrap"
                 >
                   {loadingSecuencial ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -461,7 +461,7 @@ export default function InvoicePage() {
                 </button>
               </div>
               {sequentialReused && (
-                <p className="text-amber-400 text-xs mt-1 flex items-center gap-1">
+                <p className="text-amber-600 text-xs mt-1 flex items-center gap-1">
                   <span className="material-symbols-outlined text-sm">
                     refresh
                   </span>
@@ -472,48 +472,48 @@ export default function InvoicePage() {
 
             {/* Dirección Establecimiento */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Dirección Establecimiento
               </label>
               <input
                 type="text"
                 value={establishmentAddress}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
 
             {/* Obligado Contabilidad */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Obligado Contabilidad
               </label>
               <input
                 type="text"
                 value={hasRequiredAccounting}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
           </div>
         </div>
 
         {/* Datos del Cliente */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-          <h2 className="text-text-light text-lg font-bold mb-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h2 className="text-gray-900 text-lg font-bold mb-4">
             Datos del Cliente
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Tipo de Identificación */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Tipo de Identificación *
               </label>
               <select
                 value={buyerIdType}
                 onChange={(e) => setBuyerIdType(e.target.value)}
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               >
                 {BUYER_ID_TYPES.map((type) => (
                   <option key={type.code} value={type.code}>
@@ -525,7 +525,7 @@ export default function InvoicePage() {
 
             {/* Número de Identificación */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Número de Identificación *
               </label>
               <div className="flex gap-2">
@@ -535,7 +535,7 @@ export default function InvoicePage() {
                   onChange={(e) => setBuyerIdNumber(e.target.value)}
                   placeholder="Cédula o RUC del cliente"
                   maxLength={13}
-                  className="flex-1 px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                  className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
                 />
                 <button
                   onClick={handleSearchPatient}
@@ -544,7 +544,7 @@ export default function InvoicePage() {
                     !buyerIdNumber ||
                     buyerIdNumber.length < 10
                   }
-                  className="px-3 py-2 bg-primary-light hover:bg-primary-dark text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  className="px-3 py-2 bg-[#9098f8] hover:bg-[#7a82e8] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                   title="Buscar paciente"
                 >
                   {loadingPatient ? (
@@ -560,7 +560,7 @@ export default function InvoicePage() {
 
             {/* Razón Social Cliente */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre / Razón Social *
               </label>
               <input
@@ -568,13 +568,13 @@ export default function InvoicePage() {
                 value={buyerSocialReason}
                 onChange={(e) => setBuyerSocialReason(e.target.value)}
                 placeholder="Nombre del cliente"
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               />
             </div>
 
             {/* Dirección Cliente */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Dirección
               </label>
               <input
@@ -582,13 +582,13 @@ export default function InvoicePage() {
                 value={buyerAddress}
                 onChange={(e) => setBuyerAddress(e.target.value)}
                 placeholder="Dirección del cliente"
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               />
             </div>
 
             {/* Email Cliente */}
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email (opcional)
               </label>
               <input
@@ -596,23 +596,23 @@ export default function InvoicePage() {
                 value={buyerEmail}
                 onChange={(e) => setBuyerEmail(e.target.value)}
                 placeholder="cliente@ejemplo.com"
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Productos/Servicios */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-text-light text-lg font-bold">
+            <h2 className="text-gray-900 text-lg font-bold">
               Servicio a Facturar
             </h2>
           </div>
 
           {!defaultProduct ? (
-            <div className="flex items-center justify-center py-8 text-text-secondary-light">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-light mr-3"></div>
+            <div className="flex items-center justify-center py-8 text-gray-600">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#9098f8] mr-3"></div>
               Cargando producto...
             </div>
           ) : (
@@ -620,38 +620,38 @@ export default function InvoicePage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-[#323a46]">
-                      <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-2">
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left text-gray-600 text-sm font-medium py-3 px-2">
                         Descripción
                       </th>
-                      <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-2 w-24">
+                      <th className="text-left text-gray-600 text-sm font-medium py-3 px-2 w-24">
                         Código
                       </th>
-                      <th className="text-right text-text-secondary-light text-sm font-medium py-3 px-2 w-24">
+                      <th className="text-right text-gray-600 text-sm font-medium py-3 px-2 w-24">
                         Cantidad
                       </th>
-                      <th className="text-right text-text-secondary-light text-sm font-medium py-3 px-2 w-28">
+                      <th className="text-right text-gray-600 text-sm font-medium py-3 px-2 w-28">
                         P. Unitario
                       </th>
-                      <th className="text-right text-text-secondary-light text-sm font-medium py-3 px-2 w-24">
+                      <th className="text-right text-gray-600 text-sm font-medium py-3 px-2 w-24">
                         Descuento
                       </th>
-                      <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-2 w-32">
+                      <th className="text-left text-gray-600 text-sm font-medium py-3 px-2 w-32">
                         IVA
                       </th>
-                      <th className="text-right text-text-secondary-light text-sm font-medium py-3 px-2 w-28">
+                      <th className="text-right text-gray-600 text-sm font-medium py-3 px-2 w-28">
                         Subtotal
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-[#323a46]/50">
+                    <tr className="border-b border-gray-200">
                       <td className="py-2 px-2">
                         <input
                           type="text"
                           value={defaultProduct.description}
                           disabled
-                          className="w-full px-3 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -659,7 +659,7 @@ export default function InvoicePage() {
                           type="text"
                           value={defaultProduct.code}
                           disabled
-                          className="w-full px-3 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -670,7 +670,7 @@ export default function InvoicePage() {
                             setProductQuantity(parseInt(e.target.value) || 1)
                           }
                           min="1"
-                          className="w-full px-3 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light text-right focus:outline-none focus:border-primary-light text-sm"
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 text-right focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -678,7 +678,7 @@ export default function InvoicePage() {
                           type="text"
                           value={`$${productUnitValue.toFixed(2)}`}
                           disabled
-                          className="w-full px-3 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-right text-sm cursor-not-allowed"
+                          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-right text-sm cursor-not-allowed"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -690,7 +690,7 @@ export default function InvoicePage() {
                           }
                           min="0"
                           step="0.01"
-                          className="w-full px-3 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light text-right focus:outline-none focus:border-primary-light text-sm"
+                          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 text-right focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -698,10 +698,10 @@ export default function InvoicePage() {
                           type="text"
                           value="15% IVA"
                           disabled
-                          className="w-full px-3 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
                         />
                       </td>
-                      <td className="py-2 px-2 text-right text-text-light font-medium">
+                      <td className="py-2 px-2 text-right text-gray-900 font-medium">
                         ${productSubtotal.toFixed(2)}
                       </td>
                     </tr>
@@ -712,15 +712,15 @@ export default function InvoicePage() {
               {/* Totales */}
               <div className="flex justify-end mt-4">
                 <div className="w-64 space-y-2">
-                  <div className="flex justify-between text-text-secondary-light text-sm">
+                  <div className="flex justify-between text-gray-600 text-sm">
                     <span>Subtotal:</span>
                     <span>${totalSubtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-text-secondary-light text-sm">
+                  <div className="flex justify-between text-gray-600 text-sm">
                     <span>IVA (15%):</span>
                     <span>${totalIva.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-text-light font-bold text-lg border-t border-[#323a46] pt-2">
+                  <div className="flex justify-between text-gray-900 font-bold text-lg border-t border-gray-200 pt-2">
                     <span>Total:</span>
                     <span>${totalFinal.toFixed(2)}</span>
                   </div>
@@ -731,20 +731,20 @@ export default function InvoicePage() {
         </div>
 
         {/* Forma de Pago */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-          <h2 className="text-text-light text-lg font-bold mb-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <h2 className="text-gray-900 text-lg font-bold mb-4">
             Forma de Pago
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Método de Pago
               </label>
               <select
                 value={paymentMethodType}
                 onChange={(e) => setPaymentMethodType(e.target.value)}
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               >
                 {PAYMENT_METHODS.map((method) => (
                   <option key={method.code} value={method.code}>
@@ -755,7 +755,7 @@ export default function InvoicePage() {
             </div>
 
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Plazo (días)
               </label>
               <input
@@ -763,19 +763,19 @@ export default function InvoicePage() {
                 value={paymentTerm}
                 onChange={(e) => setPaymentTerm(e.target.value)}
                 min="0"
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Monto
               </label>
               <input
                 type="text"
                 value={`$${totalFinal.toFixed(2)}`}
                 disabled
-                className="w-full px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
               />
             </div>
           </div>
@@ -786,7 +786,7 @@ export default function InvoicePage() {
           <button
             onClick={handleSubmit}
             disabled={loading || !businessRuc}
-            className="px-8 py-3 bg-primary-light hover:bg-primary-dark text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-8 py-3 bg-[#9098f8] hover:bg-[#7a82e8] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {loading ? (
               <>
@@ -817,14 +817,14 @@ export default function InvoicePage() {
           <div
             className={`rounded-xl p-4 border ${
               isSuccess && isAuthorized
-                ? "bg-green-500/10 border-green-500"
-                : "bg-red-500/10 border-red-500"
+                ? "bg-green-50 border-green-200"
+                : "bg-red-50 border-red-200"
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
               <span
                 className={`font-bold text-lg ${
-                  isSuccess && isAuthorized ? "text-green-500" : "text-red-500"
+                  isSuccess && isAuthorized ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {response.data?.authorization?.status || response.status}
@@ -832,7 +832,7 @@ export default function InvoicePage() {
               <span className="text-gray-400">•</span>
               <p
                 className={`${
-                  isSuccess && isAuthorized ? "text-green-400" : "text-red-400"
+                  isSuccess && isAuthorized ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {response.data?.message || response.message}
@@ -840,9 +840,9 @@ export default function InvoicePage() {
             </div>
 
             {isAuthorized && response.data?.authorization && (
-              <div className="mt-4 space-y-2 text-sm text-text-secondary-light">
+              <div className="mt-4 space-y-2 text-sm text-gray-600">
                 <p>
-                  <span className="font-medium text-text-light">
+                  <span className="font-medium text-gray-900">
                     Clave de Acceso:
                   </span>{" "}
                   <span className="font-mono">
@@ -850,7 +850,7 @@ export default function InvoicePage() {
                   </span>
                 </p>
                 <p>
-                  <span className="font-medium text-text-light">
+                  <span className="font-medium text-gray-900">
                     Número de Autorización:
                   </span>{" "}
                   <span className="font-mono">
@@ -858,11 +858,11 @@ export default function InvoicePage() {
                   </span>
                 </p>
                 <p>
-                  <span className="font-medium text-text-light">Ambiente:</span>{" "}
+                  <span className="font-medium text-gray-900">Ambiente:</span>{" "}
                   {response.data.authorization.environment}
                 </p>
                 <p>
-                  <span className="font-medium text-text-light">
+                  <span className="font-medium text-gray-900">
                     Fecha de Autorización:
                   </span>{" "}
                   {new Date(

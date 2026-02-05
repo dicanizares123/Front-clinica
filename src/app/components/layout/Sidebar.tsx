@@ -54,7 +54,7 @@ export default function Sidebar({ user }: SidebarProps) {
 
   return (
     <aside
-      className={`flex h-screen min-h-full flex-col bg-surface-dark border-r border-[#323a46] shadow-xl sticky top-0 transition-all duration-200 ease-in-out p-4 ${
+      className={`flex h-screen min-h-full flex-col bg-surface-dark border-r border-[#323a46] shadow-xl sticky top-0 transition-all duration-200 ease-in-out p-4 rounded-r-2xl ${
         isCollapsed ? "w-20" : "w-64"
       }`}
     >
@@ -65,7 +65,7 @@ export default function Sidebar({ user }: SidebarProps) {
       >
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-white cursor-pointer hover:bg-primary-light transition-colors ${
+          className={`flex items-center gap-3 px-3 py-2 rounded-full text-white cursor-pointer hover:bg-primary-light transition-colors ${
             isCollapsed ? "justify-center" : ""
           }`}
         >
@@ -83,7 +83,7 @@ export default function Sidebar({ user }: SidebarProps) {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-full transition-colors ${
               isCollapsed ? "justify-center" : ""
             } ${
               (item as any).className
@@ -116,7 +116,7 @@ export default function Sidebar({ user }: SidebarProps) {
         ))}
 
         <button
-          className={`flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-primary-light hover:text-white cursor-pointer w-full transition-colors ${
+          className={`flex items-center gap-3 px-3 py-2 rounded-full text-gray-300 hover:bg-primary-light hover:text-white cursor-pointer w-full transition-colors ${
             isCollapsed ? "justify-center" : "text-left"
           }`}
           onClick={handleLogout}

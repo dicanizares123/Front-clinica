@@ -36,6 +36,9 @@ export default function StatsGrid({ data }: StatsGridProps) {
           value={patientsData?.count || 0}
           icon="groups"
           color="blue"
+          className="bg-white"
+          titleClassName="text-gray-600"
+          valueClassName="text-gray-900"
         />
         <StatsCard
           title="Añadir Paciente"
@@ -43,6 +46,8 @@ export default function StatsGrid({ data }: StatsGridProps) {
           color="orange"
           onClick={() => setIsPatientModalOpen(true)}
           clickable
+          className="bg-white"
+          titleClassName="text-gray-600"
         />
         <StatsCard
           title="Crear Nueva Cita"
@@ -50,12 +55,14 @@ export default function StatsGrid({ data }: StatsGridProps) {
           color="green"
           onClick={() => setIsAppointmentModalOpen(true)}
           clickable
+          className="bg-white"
+          titleClassName="text-gray-600"
         />
         <StatsCard
           title="USA EL SERVICIO DE RENTA INTERNA ECUADOR EN UN MISMO LUGAR"
           imageSrc="https://facturasrapidasec.com/wp-content/uploads/2026/01/sri-seeklogo-1024x657.png"
-          className="bg-white/80"
-          titleClassName="text-black/70"
+          className="bg-white"
+          titleClassName="text-gray-700"
           onClick={() => router.push("/home/sri")}
         />
       </div>

@@ -262,21 +262,21 @@ export default function ViewInvoicesPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
+            <h1 className="text-gray-900 text-2xl font-bold leading-tight">
               Historial de Facturas
             </h1>
-            <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+            <p className="text-gray-600 text-sm">
               Consulta las facturas electrónicas emitidas
             </p>
           </div>
         </div>
 
         {/* Filtros */}
-        <div className="bg-surface-dark p-4 rounded-xl shadow-lg border border-[#323a46]">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
           <div className="flex flex-wrap gap-4 items-end">
             {/* Filtro por cédula/RUC del cliente */}
             <div className="flex-1 min-w-[200px]">
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Identificación del Cliente
               </label>
               <input
@@ -284,19 +284,19 @@ export default function ViewInvoicesPage() {
                 value={customerIde}
                 onChange={(e) => setCustomerIde(e.target.value)}
                 placeholder="Cédula o RUC del cliente"
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               />
             </div>
 
             {/* Filtro por estado */}
             <div className="w-48">
-              <label className="block text-text-light text-sm font-medium mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Estado de Autorización
               </label>
               <select
                 value={authorizationStatus}
                 onChange={(e) => setAuthorizationStatus(e.target.value)}
-                className="w-full px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light focus:outline-none focus:border-primary-light text-sm"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
               >
                 <option value="">Todos</option>
                 <option value="AUTORIZADO">Autorizado</option>
@@ -308,7 +308,7 @@ export default function ViewInvoicesPage() {
             <div className="flex gap-2">
               <button
                 onClick={handleSearch}
-                className="px-4 py-2 bg-primary-light hover:bg-primary-dark text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-[#9098f8] hover:bg-[#7a82e8] text-white rounded-lg font-medium transition-colors flex items-center gap-2"
               >
                 <span className="material-symbols-outlined text-lg">
                   search
@@ -317,7 +317,7 @@ export default function ViewInvoicesPage() {
               </button>
               <button
                 onClick={handleClearFilters}
-                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors"
+                className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors"
               >
                 Limpiar
               </button>
@@ -328,26 +328,24 @@ export default function ViewInvoicesPage() {
         {/* Contenido principal */}
         <div className="flex gap-6">
           {/* Lista de facturas */}
-          <div className="flex-1 bg-surface-dark rounded-xl shadow-lg border border-[#323a46] overflow-hidden">
+          <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center h-64">
                 <div className="flex flex-col items-center gap-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                  <p className="text-text-secondary-light">
-                    Cargando facturas...
-                  </p>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9098f8]"></div>
+                  <p className="text-gray-600">Cargando facturas...</p>
                 </div>
               </div>
             ) : error ? (
               <div className="flex items-center justify-center h-64">
                 <div className="flex flex-col items-center gap-4 text-center">
-                  <span className="material-symbols-outlined text-5xl text-error">
+                  <span className="material-symbols-outlined text-5xl text-red-500">
                     error
                   </span>
-                  <p className="text-error">{error}</p>
+                  <p className="text-red-500">{error}</p>
                   <button
                     onClick={fetchInvoices}
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                    className="px-4 py-2 bg-[#9098f8] text-white rounded-lg hover:bg-[#7a82e8] transition-colors"
                   >
                     Reintentar
                   </button>
@@ -356,12 +354,10 @@ export default function ViewInvoicesPage() {
             ) : invoices.length === 0 ? (
               <div className="flex items-center justify-center h-64">
                 <div className="flex flex-col items-center gap-4 text-center">
-                  <span className="material-symbols-outlined text-5xl text-text-secondary-light">
+                  <span className="material-symbols-outlined text-5xl text-gray-400">
                     receipt_long
                   </span>
-                  <p className="text-text-secondary-light">
-                    No hay facturas registradas
-                  </p>
+                  <p className="text-gray-600">No hay facturas registradas</p>
                 </div>
               </div>
             ) : (
@@ -369,21 +365,21 @@ export default function ViewInvoicesPage() {
                 {/* Tabla */}
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-[#1a1f2e]">
+                    <thead className="bg-[#262a37]">
                       <tr>
-                        <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-4">
+                        <th className="text-left text-white text-sm font-medium py-3 px-4">
                           Clave de Acceso
                         </th>
-                        <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-4">
+                        <th className="text-left text-white text-sm font-medium py-3 px-4">
                           Secuencial
                         </th>
-                        <th className="text-left text-text-secondary-light text-sm font-medium py-3 px-4">
+                        <th className="text-left text-white text-sm font-medium py-3 px-4">
                           Cliente
                         </th>
-                        <th className="text-right text-text-secondary-light text-sm font-medium py-3 px-4">
+                        <th className="text-right text-white text-sm font-medium py-3 px-4">
                           Total
                         </th>
-                        <th className="text-center text-text-secondary-light text-sm font-medium py-3 px-4">
+                        <th className="text-center text-white text-sm font-medium py-3 px-4">
                           Estado
                         </th>
                       </tr>
@@ -393,16 +389,16 @@ export default function ViewInvoicesPage() {
                         <tr
                           key={invoice.document.taxAuthorityInfo.keyAccess}
                           onClick={() => setSelectedInvoice(invoice)}
-                          className={`border-t border-[#323a46]/50 cursor-pointer transition-colors ${
+                          className={`border-t border-gray-200 cursor-pointer transition-colors ${
                             selectedInvoice?.document.taxAuthorityInfo
                               .keyAccess ===
                             invoice.document.taxAuthorityInfo.keyAccess
-                              ? "bg-primary-light/10"
-                              : "hover:bg-[#1a1f2e]/50"
+                              ? "bg-[#9098f8]/10"
+                              : "hover:bg-gray-50"
                           }`}
                         >
                           <td className="py-3 px-4">
-                            <span className="font-mono text-xs text-primary-light hover:text-primary-dark">
+                            <span className="font-mono text-xs text-[#9098f8] hover:text-[#7a82e8]">
                               {invoice.document.taxAuthorityInfo.keyAccess.substring(
                                 0,
                                 20,
@@ -410,7 +406,7 @@ export default function ViewInvoicesPage() {
                               ...
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-text-light text-sm">
+                          <td className="py-3 px-4 text-gray-900 text-sm">
                             {
                               invoice.document.taxAuthorityInfo
                                 .sequentialDocument
@@ -418,15 +414,15 @@ export default function ViewInvoicesPage() {
                           </td>
                           <td className="py-3 px-4">
                             <div>
-                              <p className="text-text-light text-sm font-medium">
+                              <p className="text-gray-900 text-sm font-medium">
                                 {invoice.document.invoiceInfo.buyerSocialReason}
                               </p>
-                              <p className="text-text-secondary-light text-xs">
+                              <p className="text-gray-600 text-xs">
                                 {invoice.document.invoiceInfo.buyerIdNumber}
                               </p>
                             </div>
                           </td>
-                          <td className="py-3 px-4 text-right text-text-light font-medium">
+                          <td className="py-3 px-4 text-right text-gray-900 font-medium">
                             $
                             {invoice.document.invoiceInfo.totalAmount.toFixed(
                               2,
@@ -447,8 +443,8 @@ export default function ViewInvoicesPage() {
 
                 {/* Paginación */}
                 {pageInfo && pageInfo.totalPages > 1 && (
-                  <div className="flex items-center justify-between px-4 py-3 border-t border-[#323a46]">
-                    <div className="text-sm text-text-secondary-light">
+                  <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+                    <div className="text-sm text-gray-600">
                       Página {pageInfo.currentPage} de {pageInfo.totalPages} (
                       {pageInfo.totalElements} facturas)
                     </div>
@@ -456,7 +452,7 @@ export default function ViewInvoicesPage() {
                       <button
                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                         disabled={pageInfo.first}
-                        className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-[#1a1f2e] disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary-light"
+                        className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600"
                       >
                         <span className="material-symbols-outlined text-sm">
                           chevron_left
@@ -467,7 +463,7 @@ export default function ViewInvoicesPage() {
                           setPage((p) => Math.min(pageInfo.totalPages, p + 1))
                         }
                         disabled={pageInfo.last}
-                        className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-[#1a1f2e] disabled:opacity-50 disabled:cursor-not-allowed text-text-secondary-light"
+                        className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600"
                       >
                         <span className="material-symbols-outlined text-sm">
                           chevron_right
@@ -482,15 +478,13 @@ export default function ViewInvoicesPage() {
 
           {/* Panel de detalle */}
           {selectedInvoice && (
-            <div className="w-[500px] bg-surface-dark rounded-xl shadow-lg border border-[#323a46] overflow-hidden flex flex-col max-h-[calc(100vh-200px)]">
+            <div className="w-[500px] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col max-h-[calc(100vh-200px)]">
               {/* Header del detalle */}
-              <div className="p-4 border-b border-[#323a46] flex justify-between items-center bg-[#1a1f2e]">
-                <h3 className="text-text-light font-bold">
-                  Detalle de Factura
-                </h3>
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                <h3 className="text-gray-900 font-bold">Detalle de Factura</h3>
                 <button
                   onClick={() => setSelectedInvoice(null)}
-                  className="text-text-secondary-light hover:text-text-light"
+                  className="text-gray-600 hover:text-gray-900"
                 >
                   <span className="material-symbols-outlined">close</span>
                 </button>
@@ -506,7 +500,7 @@ export default function ViewInvoicesPage() {
                     {selectedInvoice.authorizationStatus || "PENDIENTE"}
                   </span>
                   {selectedInvoice.authorizationDate && (
-                    <span className="text-text-secondary-light text-xs">
+                    <span className="text-gray-600 text-xs">
                       {formatDate(selectedInvoice.authorizationDate)}
                     </span>
                   )}
@@ -514,10 +508,10 @@ export default function ViewInvoicesPage() {
 
                 {/* Clave de acceso */}
                 <div>
-                  <label className="text-text-secondary-light text-xs block mb-1">
+                  <label className="text-gray-600 text-xs block mb-1">
                     Clave de Acceso
                   </label>
-                  <p className="font-mono text-xs text-text-light break-all bg-[#1a1f2e] p-2 rounded">
+                  <p className="font-mono text-xs text-gray-900 break-all bg-gray-50 p-2 rounded">
                     {selectedInvoice.document.taxAuthorityInfo.keyAccess}
                   </p>
                 </div>
@@ -525,10 +519,10 @@ export default function ViewInvoicesPage() {
                 {/* Información del documento */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-text-secondary-light text-xs block mb-1">
+                    <label className="text-gray-600 text-xs block mb-1">
                       Secuencial
                     </label>
-                    <p className="text-text-light text-sm font-medium">
+                    <p className="text-gray-900 text-sm font-medium">
                       {
                         selectedInvoice.document.taxAuthorityInfo
                           .sequentialDocument
@@ -536,18 +530,18 @@ export default function ViewInvoicesPage() {
                     </p>
                   </div>
                   <div>
-                    <label className="text-text-secondary-light text-xs block mb-1">
+                    <label className="text-gray-600 text-xs block mb-1">
                       Fecha Emisión
                     </label>
-                    <p className="text-text-light text-sm">
+                    <p className="text-gray-900 text-sm">
                       {selectedInvoice.document.invoiceInfo.emissionDate}
                     </p>
                   </div>
                   <div>
-                    <label className="text-text-secondary-light text-xs block mb-1">
+                    <label className="text-gray-600 text-xs block mb-1">
                       Establecimiento
                     </label>
-                    <p className="text-text-light text-sm">
+                    <p className="text-gray-900 text-sm">
                       {
                         selectedInvoice.document.taxAuthorityInfo
                           .establishmentCode
@@ -556,10 +550,10 @@ export default function ViewInvoicesPage() {
                     </p>
                   </div>
                   <div>
-                    <label className="text-text-secondary-light text-xs block mb-1">
+                    <label className="text-gray-600 text-xs block mb-1">
                       Ambiente
                     </label>
-                    <p className="text-text-light text-sm">
+                    <p className="text-gray-900 text-sm">
                       {selectedInvoice.document.taxAuthorityInfo
                         .environmentType === "1"
                         ? "Pruebas"
@@ -569,23 +563,23 @@ export default function ViewInvoicesPage() {
                 </div>
 
                 {/* Datos del cliente */}
-                <div className="border-t border-[#323a46] pt-4">
-                  <h4 className="text-text-light font-medium mb-3">Cliente</h4>
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-gray-900 font-medium mb-3">Cliente</h4>
                   <div className="space-y-2">
                     <div>
-                      <label className="text-text-secondary-light text-xs block">
+                      <label className="text-gray-600 text-xs block">
                         Nombre / Razón Social
                       </label>
-                      <p className="text-text-light text-sm">
+                      <p className="text-gray-900 text-sm">
                         {selectedInvoice.document.invoiceInfo.buyerSocialReason}
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-text-secondary-light text-xs block">
+                        <label className="text-gray-600 text-xs block">
                           Identificación
                         </label>
-                        <p className="text-text-light text-sm">
+                        <p className="text-gray-900 text-sm">
                           {
                             ID_TYPE_MAP[
                               selectedInvoice.document.invoiceInfo.buyerIdType
@@ -595,20 +589,20 @@ export default function ViewInvoicesPage() {
                         </p>
                       </div>
                       <div>
-                        <label className="text-text-secondary-light text-xs block">
+                        <label className="text-gray-600 text-xs block">
                           Email
                         </label>
-                        <p className="text-text-light text-sm truncate">
+                        <p className="text-gray-900 text-sm truncate">
                           {selectedInvoice.document.invoiceInfo.buyerEmail ||
                             "N/A"}
                         </p>
                       </div>
                     </div>
                     <div>
-                      <label className="text-text-secondary-light text-xs block">
+                      <label className="text-gray-600 text-xs block">
                         Dirección
                       </label>
-                      <p className="text-text-light text-sm">
+                      <p className="text-gray-900 text-sm">
                         {selectedInvoice.document.invoiceInfo.buyerAddress}
                       </p>
                     </div>
@@ -616,25 +610,25 @@ export default function ViewInvoicesPage() {
                 </div>
 
                 {/* Detalle de productos */}
-                <div className="border-t border-[#323a46] pt-4">
-                  <h4 className="text-text-light font-medium mb-3">
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-gray-900 font-medium mb-3">
                     Productos/Servicios
                   </h4>
                   <div className="space-y-2">
                     {selectedInvoice.document.details.map((detail, idx) => (
                       <div
                         key={idx}
-                        className="bg-[#1a1f2e] p-3 rounded-lg text-sm"
+                        className="bg-gray-50 p-3 rounded-lg text-sm"
                       >
                         <div className="flex justify-between mb-1">
-                          <span className="text-text-light font-medium">
+                          <span className="text-gray-900 font-medium">
                             {detail.description}
                           </span>
-                          <span className="text-text-light font-medium">
+                          <span className="text-gray-900 font-medium">
                             ${detail.total.toFixed(2)}
                           </span>
                         </div>
-                        <div className="text-text-secondary-light text-xs">
+                        <div className="text-gray-600 text-xs">
                           {detail.amount} x ${detail.unitValue.toFixed(2)} |
                           Desc: ${detail.discount.toFixed(2)} | IVA: $
                           {detail.valueIva.toFixed(2)}
@@ -645,14 +639,12 @@ export default function ViewInvoicesPage() {
                 </div>
 
                 {/* Totales */}
-                <div className="border-t border-[#323a46] pt-4">
-                  <h4 className="text-text-light font-medium mb-3">Totales</h4>
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-gray-900 font-medium mb-3">Totales</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-text-secondary-light">
-                        Subtotal:
-                      </span>
-                      <span className="text-text-light">
+                      <span className="text-gray-600">Subtotal:</span>
+                      <span className="text-gray-900">
                         $
                         {selectedInvoice.document.invoiceInfo.subtotal.toFixed(
                           2,
@@ -660,10 +652,8 @@ export default function ViewInvoicesPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-text-secondary-light">
-                        Descuento:
-                      </span>
-                      <span className="text-text-light">
+                      <span className="text-gray-600">Descuento:</span>
+                      <span className="text-gray-900">
                         $
                         {selectedInvoice.document.invoiceInfo.discountTotal.toFixed(
                           2,
@@ -671,17 +661,17 @@ export default function ViewInvoicesPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-text-secondary-light">IVA:</span>
-                      <span className="text-text-light">
+                      <span className="text-gray-600">IVA:</span>
+                      <span className="text-gray-900">
                         $
                         {selectedInvoice.document.invoiceInfo.totalIva.toFixed(
                           2,
                         )}
                       </span>
                     </div>
-                    <div className="flex justify-between border-t border-[#323a46] pt-2 font-bold">
-                      <span className="text-text-light">TOTAL:</span>
-                      <span className="text-primary-light text-lg">
+                    <div className="flex justify-between border-t border-gray-200 pt-2 font-bold">
+                      <span className="text-gray-900">TOTAL:</span>
+                      <span className="text-[#9098f8] text-lg">
                         $
                         {selectedInvoice.document.invoiceInfo.totalAmount.toFixed(
                           2,
@@ -692,20 +682,20 @@ export default function ViewInvoicesPage() {
                 </div>
 
                 {/* Forma de pago */}
-                <div className="border-t border-[#323a46] pt-4">
-                  <h4 className="text-text-light font-medium mb-3">
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-gray-900 font-medium mb-3">
                     Forma de Pago
                   </h4>
                   {selectedInvoice.document.paymentMethods.map(
                     (payment, idx) => (
                       <div
                         key={idx}
-                        className="bg-[#1a1f2e] p-3 rounded-lg text-sm"
+                        className="bg-gray-50 p-3 rounded-lg text-sm"
                       >
-                        <p className="text-text-light">
+                        <p className="text-gray-900">
                           {PAYMENT_TYPE_MAP[payment.type] || payment.type}
                         </p>
-                        <p className="text-text-secondary-light text-xs">
+                        <p className="text-gray-600 text-xs">
                           ${payment.total.toFixed(2)} - Plazo:{" "}
                           {payment.paymentTerm} {payment.timeUnit}
                         </p>
@@ -715,15 +705,13 @@ export default function ViewInvoicesPage() {
                 </div>
 
                 {/* Historial */}
-                <div className="border-t border-[#323a46] pt-4">
-                  <h4 className="text-text-light font-medium mb-3">
-                    Historial
-                  </h4>
+                <div className="border-t border-gray-200 pt-4">
+                  <h4 className="text-gray-900 font-medium mb-3">Historial</h4>
                   <div className="space-y-2">
                     {selectedInvoice.histories.map((history, idx) => (
                       <div
                         key={idx}
-                        className="bg-[#1a1f2e] p-3 rounded-lg text-sm"
+                        className="bg-gray-50 p-3 rounded-lg text-sm"
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <span
@@ -731,11 +719,11 @@ export default function ViewInvoicesPage() {
                           >
                             {history.type}
                           </span>
-                          <span className="text-text-secondary-light text-xs">
+                          <span className="text-gray-600 text-xs">
                             {formatDate(history.createAt)}
                           </span>
                         </div>
-                        <p className="text-text-secondary-light text-xs">
+                        <p className="text-gray-600 text-xs">
                           {history.description}
                         </p>
                       </div>

@@ -167,103 +167,101 @@ export default function PatientsPage() {
         </div>
 
         {/* Tabla de pacientes */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="flex flex-col items-center gap-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <p className="text-text-secondary-light dark:text-text-secondary-dark">
-                  Cargando pacientes...
-                </p>
-              </div>
+
+        {isLoading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="flex flex-col items-center gap-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="text-text-secondary-light dark:text-text-secondary-dark">
+                Cargando pacientes...
+              </p>
             </div>
-          ) : error ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="flex flex-col items-center gap-4 text-center">
-                <span className="material-symbols-outlined text-5xl text-error">
-                  error
-                </span>
-                <p className="text-error">Error al cargar los pacientes</p>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <span className="material-symbols-outlined text-5xl text-error">
+                error
+              </span>
+              <p className="text-error">Error al cargar los pacientes</p>
+              <button
+                onClick={() => mutate()}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Reintentar
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <DataTable
+              columns={columns}
+              data={patients}
+              keyExtractor={(row) => row.id.toString()}
+              emptyMessage="No hay pacientes registrados"
+              hoverable
+            />
+
+            {/* Paginación */}
+            <div className="flex items-center justify-between px-6 py-4">
+              <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                Mostrando {patients.length > 0 ? (page - 1) * pageSize + 1 : 0}{" "}
+                - {Math.min(page * pageSize, totalCount)} de {totalCount}{" "}
+                pacientes
+              </div>
+
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={() => mutate()}
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
                 >
-                  Reintentar
+                  <span className="material-symbols-outlined text-sm">
+                    chevron_left
+                  </span>
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let pageNum;
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (page <= 3) {
+                      pageNum = i + 1;
+                    } else if (page >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = page - 2 + i;
+                    }
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setPage(pageNum)}
+                        className={`px-3 py-1 rounded-lg transition-colors ${
+                          page === pageNum
+                            ? "bg-primary text-white"
+                            : "hover:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages}
+                  className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
+                >
+                  <span className="material-symbols-outlined text-sm">
+                    chevron_right
+                  </span>
                 </button>
               </div>
             </div>
-          ) : (
-            <>
-              <DataTable
-                columns={columns}
-                data={patients}
-                keyExtractor={(row) => row.id.toString()}
-                emptyMessage="No hay pacientes registrados"
-                hoverable
-              />
-
-              {/* Paginación */}
-              <div className="flex items-center justify-between px-6 py-4 border-t border-[#323a46]">
-                <div className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-                  Mostrando{" "}
-                  {patients.length > 0 ? (page - 1) * pageSize + 1 : 0} -{" "}
-                  {Math.min(page * pageSize, totalCount)} de {totalCount}{" "}
-                  pacientes
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    disabled={page === 1}
-                    className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
-                  >
-                    <span className="material-symbols-outlined text-sm">
-                      chevron_left
-                    </span>
-                  </button>
-
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (page <= 3) {
-                        pageNum = i + 1;
-                      } else if (page >= totalPages - 2) {
-                        pageNum = totalPages - 4 + i;
-                      } else {
-                        pageNum = page - 2 + i;
-                      }
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setPage(pageNum)}
-                          className={`px-3 py-1 rounded-lg transition-colors ${
-                            page === pageNum
-                              ? "bg-primary text-white"
-                              : "hover:bg-surface-dark text-text-secondary-light dark:text-text-secondary-dark"
-                          }`}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <button
-                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                    disabled={page >= totalPages}
-                    className="px-3 py-1 border border-[#323a46] rounded-lg hover:bg-surface-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-text-secondary-light dark:text-text-secondary-dark"
-                  >
-                    <span className="material-symbols-outlined text-sm">
-                      chevron_right
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
+          </>
+        )}
       </div>
 
       {/* Modal editar paciente */}

@@ -8,6 +8,7 @@ interface StatsCardProps {
   color?: "blue" | "green" | "purple" | "orange";
   className?: string; // Permitir clases personalizadas
   titleClassName?: string;
+  valueClassName?: string;
   onClick?: () => void;
   clickable?: boolean;
 }
@@ -19,16 +20,21 @@ export default function StatsCard({
   imageSrc,
   color,
   className = "",
-  titleClassName = "text-text-secondary",
+  titleClassName = "text-gray-600",
+  valueClassName = "text-gray-900",
   onClick,
   clickable = false,
 }: StatsCardProps) {
   return (
     <div
       onClick={onClick}
-      className={`border border-[#323a46] p-4 rounded-md shadow flex items-center justify-between ${
-        className || "bg-surface-dark"
-      } ${clickable ? "cursor-pointer hover:bg-[#323a46] transition-colors" : ""}`}
+      className={`border border-gray-300/50 p-4 rounded-xl shadow-sm flex items-center justify-between ${
+        className || "bg-gradient-to-br from-white to-gray-50"
+      } ${
+        clickable
+          ? "cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all"
+          : ""
+      }`}
     >
       <div>
         {title && (
@@ -39,7 +45,7 @@ export default function StatsCard({
           </p>
         )}
         {value && (
-          <p className="text-2xl font-bold text-text-primary">{value}</p>
+          <p className={`text-2xl font-bold ${valueClassName}`}>{value}</p>
         )}
       </div>
       <div className={`text-${color}-500`}>

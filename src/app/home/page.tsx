@@ -42,7 +42,7 @@ export default function Home() {
       <div className="flex flex-col gap-6 h-full flex-1">
         {/* Row 1: Stats */}
         <div>
-          <h2 className="text-text-primary text-xl font-semibold mb-4">
+          <h2 className="text-gray-700 text-xl font-semibold mb-4">
             Acciones Rápidas
           </h2>
           <StatsGrid />

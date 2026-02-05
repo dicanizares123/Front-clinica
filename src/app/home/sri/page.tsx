@@ -84,76 +84,73 @@ export default function SriPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
+            <h1 className="text-gray-900 text-2xl font-bold leading-tight">
               Servicio de Rentas Internas Ecuador
             </h1>
-            <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+            <p className="text-gray-600 text-sm">
               Gracias a la integración con el SRI, puedes validar y usar
               diferentes servicios en un solo lugar.
             </p>
           </div>
         </div>
 
-        {/* Contenedor principal con estilo similar al calendario */}
-        <div className="bg-surface-dark rounded-xl shadow-lg border border-[#323a46] p-6 flex flex-col gap-8">
-          {/* Sección Olimpush */}
-          <div>
-            <h2 className="text-text-primary text-l font-semibold mb-4">
-              OlimpushAPI
-            </h2>
+        {/* Sección Olimpush */}
+        <div>
+          <h2 className="text-gray-900 text-l font-semibold mb-4">
+            OlimpushAPI
+          </h2>
 
+          <div className="w-fit">
+            <SriServiceCard
+              title={olimpushService.title}
+              description={olimpushService.description}
+              imageSrc={olimpushService.imageSrc}
+              href={olimpushService.href}
+            />
+          </div>
+        </div>
+
+        {/* Sección Facturación Electrónica */}
+        <div>
+          <h2 className="text-gray-900 text-lg font-semibold mb-4">
+            Facturación Electrónica
+          </h2>
+          <div className="flex flex-wrap gap-6">
             <div className="w-fit">
               <SriServiceCard
-                title={olimpushService.title}
-                description={olimpushService.description}
-                imageSrc={olimpushService.imageSrc}
-                href={olimpushService.href}
+                title={invoiceService.title}
+                description={invoiceService.description}
+                imageSrc={invoiceService.imageSrc}
+                href={invoiceService.href}
+              />
+            </div>
+            <div className="w-fit">
+              <SriServiceCard
+                title={viewInvoicesService.title}
+                description={viewInvoicesService.description}
+                imageSrc={viewInvoicesService.imageSrc}
+                href={viewInvoicesService.href}
               />
             </div>
           </div>
+        </div>
 
-          {/* Sección Facturación Electrónica */}
-          <div>
-            <h2 className="text-text-primary text-lg font-semibold mb-4">
-              Facturación Electrónica
-            </h2>
-            <div className="flex flex-wrap gap-6">
-              <div className="w-fit">
+        {/* Sección Servicios del SRI */}
+        <div>
+          <h2 className="text-gray-900 text-lg font-semibold mb-4">
+            Servicios del SRI
+          </h2>
+          <div className="flex flex-wrap gap-6">
+            {sriServices.map((service) => (
+              <div key={service.href} className="w-fit">
                 <SriServiceCard
-                  title={invoiceService.title}
-                  description={invoiceService.description}
-                  imageSrc={invoiceService.imageSrc}
-                  href={invoiceService.href}
+                  title={service.title}
+                  description={service.description}
+                  imageSrc={service.imageSrc}
+                  href={service.href}
                 />
               </div>
-              <div className="w-fit">
-                <SriServiceCard
-                  title={viewInvoicesService.title}
-                  description={viewInvoicesService.description}
-                  imageSrc={viewInvoicesService.imageSrc}
-                  href={viewInvoicesService.href}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Sección Servicios del SRI */}
-          <div>
-            <h2 className="text-text-primary text-lg font-semibold mb-4">
-              Servicios del SRI
-            </h2>
-            <div className="flex flex-wrap gap-6">
-              {sriServices.map((service) => (
-                <div key={service.href} className="w-fit">
-                  <SriServiceCard
-                    title={service.title}
-                    description={service.description}
-                    imageSrc={service.imageSrc}
-                    href={service.href}
-                  />
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>

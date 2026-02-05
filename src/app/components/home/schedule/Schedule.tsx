@@ -258,14 +258,14 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   // Mostrar estado de carga
   if (isLoading && appointments.length === 0) {
     return (
-      <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-        <h2 className="text-text-primary text-lg font-bold mb-4">
+      <div className="col-span-3 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="text-gray-900 text-lg font-bold mb-4">
           Horario de la Semana
         </h2>
         <div className="flex items-center justify-center h-96">
           <div className="flex flex-col items-center gap-4">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            <p className="text-text-secondary">Cargando citas...</p>
+            <p className="text-gray-600">Cargando citas...</p>
           </div>
         </div>
       </div>
@@ -276,8 +276,8 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   if (error) {
     const errorMessage = error.message || "Error al cargar las citas";
     return (
-      <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
-        <h2 className="text-text-primary text-lg font-bold mb-4">
+      <div className="col-span-3 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <h2 className="text-gray-900 text-lg font-bold mb-4">
           Horario de la Semana
         </h2>
         <div className="flex items-center justify-center h-96">
@@ -299,51 +299,21 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
   }
 
   return (
-    <div className="col-span-3 bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
+    <>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-text-primary text-lg font-bold">
-          Horario de la Semana
-        </h2>
         {isLoading && (
-          <div className="flex items-center gap-2 text-sm text-text-secondary">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
             Actualizando...
           </div>
         )}
       </div>
 
-      {/* Barra de búsqueda */}
-      <div className="mb-4">
-        <div className="flex gap-2">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar por nombre, apellido o cédula..."
-              className="w-full px-4 py-2 pl-10 bg-background-dark border border-[#323a46] rounded-lg text-text-primary placeholder-text-secondary focus:ring-2 focus:ring-primary focus:outline-none"
-            />
-            <span className="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary">
-              search
-            </span>
-          </div>
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="px-4 py-2 bg-background-dark border border-[#323a46] rounded-lg text-text-secondary hover:text-text-primary hover:bg-[#323a46] transition-colors"
-              title="Limpiar búsqueda"
-            >
-              <span className="material-symbols-outlined">close</span>
-            </button>
-          )}
-        </div>
-      </div>
-
       {/* Vista de resultados de búsqueda */}
       {debouncedSearchTerm ? (
         <div className="space-y-3">
           {appointments.length === 0 ? (
-            <div className="text-center py-12 text-text-secondary">
+            <div className="text-center py-12 text-gray-600">
               <span className="material-symbols-outlined text-5xl mb-2">
                 search_off
               </span>
@@ -353,7 +323,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
             </div>
           ) : (
             <>
-              <p className="text-text-secondary text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 {appointments.length} cita(s) encontrada(s)
               </p>
               {/* Vista tipo Cards */}
@@ -381,7 +351,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
                     <div
                       key={apt.id}
                       onClick={() => handleSelectEvent(apt)}
-                      className="bg-surface-dark border border-[#323a46] rounded-lg p-5 cursor-pointer hover:border-primary transition-colors"
+                      className="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer hover:border-primary transition-colors"
                     >
                       {/* Encabezado con icono y estado */}
                       <div className="flex items-start justify-between mb-3">
@@ -390,7 +360,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
                             event
                           </span>
                           <div>
-                            <h3 className="text-text-primary font-semibold text-base">
+                            <h3 className="text-gray-900 font-semibold text-base">
                               {apt.title}
                             </h3>
                             <span
@@ -405,13 +375,13 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
 
                       {/* Información de la cita */}
                       <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2 text-text-secondary">
+                        <div className="flex items-center gap-2 text-gray-600">
                           <span className="material-symbols-outlined text-base">
                             person
                           </span>
                           <span>{apt.patient}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-text-secondary">
+                        <div className="flex items-center gap-2 text-gray-600">
                           <span className="material-symbols-outlined text-base">
                             calendar_today
                           </span>
@@ -424,7 +394,7 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
                             })}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-text-secondary">
+                        <div className="flex items-center gap-2 text-gray-600">
                           <span className="material-symbols-outlined text-base">
                             schedule
                           </span>
@@ -512,23 +482,22 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
         </>
       )}
 
-      {/* Leyenda */}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-amber-500 rounded"></div>
-          <span className="text-gray-700 dark:text-gray-300">Programada</span>
+          <span>Programada</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span className="text-gray-700 dark:text-gray-300">Confirmada</span>
+          <span>Confirmada</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-500 rounded"></div>
-          <span className="text-gray-700 dark:text-gray-300">Completada</span>
+          <span>Completada</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-gray-700 dark:text-gray-300">Cancelada</span>
+          <span>Cancelada</span>
         </div>
       </div>
 
@@ -564,6 +533,6 @@ export default function Schedule({ events, user, onRefresh }: ScheduleProps) {
         appointment={selectedAppointment}
         user={user}
       />
-    </div>
+    </>
   );
 }

@@ -116,20 +116,20 @@ export default function ValidateEstablishmentsPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-text-light dark:text-text-dark text-2xl font-bold leading-tight">
+            <h1 className="text-gray-900 text-2xl font-bold leading-tight">
               Validar Establecimientos
             </h1>
-            <p className="text-text-secondary-light dark:text-text-secondary-dark text-sm">
+            <p className="text-gray-600 text-sm">
               Consulta los establecimientos registrados de un RUC en el SRI.
             </p>
           </div>
         </div>
 
         {/* Formulario y Tabla */}
-        <div className="bg-surface-dark p-6 rounded-xl shadow-lg border border-[#323a46]">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           {/* Selector de modo RUC */}
           <div className="mb-6">
-            <label className="block text-text-light text-sm font-medium mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Seleccionar RUC a consultar
             </label>
             <div className="flex flex-col gap-3">
@@ -140,9 +140,9 @@ export default function ValidateEstablishmentsPage() {
                   name="rucMode"
                   checked={useDefaultRuc}
                   onChange={() => setUseDefaultRuc(true)}
-                  className="w-4 h-4 text-primary-light"
+                  className="w-4 h-4 text-[#9098f8]"
                 />
-                <span className="text-text-light text-sm">
+                <span className="text-gray-900 text-sm">
                   RUC del negocio (por defecto)
                 </span>
               </label>
@@ -154,7 +154,7 @@ export default function ValidateEstablishmentsPage() {
                     type="text"
                     value={businessRuc || "No hay RUC configurado"}
                     disabled
-                    className="w-80 px-4 py-2 bg-gray-600/50 border border-[#323a46] rounded-lg text-gray-400 text-sm cursor-not-allowed"
+                    className="w-80 px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 text-sm cursor-not-allowed"
                   />
                 </div>
               )}
@@ -166,9 +166,9 @@ export default function ValidateEstablishmentsPage() {
                   name="rucMode"
                   checked={!useDefaultRuc}
                   onChange={() => setUseDefaultRuc(false)}
-                  className="w-4 h-4 text-primary-light"
+                  className="w-4 h-4 text-[#9098f8]"
                 />
-                <span className="text-text-light text-sm">
+                <span className="text-gray-900 text-sm">
                   Buscar otro RUC (opcional)
                 </span>
               </label>
@@ -181,7 +181,7 @@ export default function ValidateEstablishmentsPage() {
                     value={ruc}
                     onChange={(e) => setRuc(e.target.value)}
                     placeholder="Ej: 1790753913001"
-                    className="w-80 px-4 py-2 bg-[#1a1f2e] border border-[#323a46] rounded-lg text-text-light placeholder-gray-500 focus:outline-none focus:border-primary-light text-sm"
+                    className="w-80 px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#9098f8] focus:ring-2 focus:ring-[#9098f8]/20 text-sm"
                     maxLength={13}
                   />
                 </div>
@@ -198,7 +198,7 @@ export default function ValidateEstablishmentsPage() {
                 (useDefaultRuc && !businessRuc) ||
                 (!useDefaultRuc && !ruc.trim())
               }
-              className="px-6 py-2 bg-primary-light hover:bg-primary-dark text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-[#9098f8] hover:bg-[#7a82e8] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Consultando..." : "Consultar"}
             </button>
@@ -221,20 +221,20 @@ export default function ValidateEstablishmentsPage() {
           <div
             className={`rounded-xl p-4 border ${
               isSuccess
-                ? "bg-green-500/10 border-green-500"
-                : "bg-red-500/10 border-red-500"
+                ? "bg-green-50 border-green-200"
+                : "bg-red-50 border-red-200"
             }`}
           >
             <div className="flex items-center gap-2">
               <span
                 className={`font-bold text-lg ${
-                  isSuccess ? "text-green-500" : "text-red-500"
+                  isSuccess ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {response.status}
               </span>
               <span className="text-gray-400">•</span>
-              <p className={`${isSuccess ? "text-green-400" : "text-red-400"}`}>
+              <p className={`${isSuccess ? "text-green-600" : "text-red-600"}`}>
                 {response.message}
               </p>
             </div>

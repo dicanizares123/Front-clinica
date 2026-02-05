@@ -5,10 +5,16 @@
   --color-primary-light: #9098f8;
   --color-background-dark: #1e2029;
   --color-surface-dark: #262a37;
+  --color-background-light: #f3f4f6;
+  --color-surface-light: #ffffff;
+  --color-text-dark: #1f2937;
+  --color-text-light: #6b7280;
   --color-text-primary: #e3eaef;
   --color-text-secondary: #98a6ad;
   --card-dark: #262a37;
+  --card-light: #ffffff;
   --border-dark: #323a46;
+  --border-light: #e5e7eb;
 }
 
 @layer utilities {
@@ -24,18 +30,30 @@
   .bg-surface-dark {
     background-color: var(--color-surface-dark);
   }
+  .bg-background-light {
+    background-color: var(--color-background-light);
+  }
+  .bg-surface-light {
+    background-color: var(--color-surface-light);
+  }
   .text-primary {
     color: var(--color-text-primary);
   }
   .text-secondary {
     color: var(--color-text-secondary);
   }
+  .text-dark {
+    color: var(--color-text-dark);
+  }
+  .text-light {
+    color: var(--color-text-light);
+  }
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-background-dark);
-  color: var(--color-text-primary);
+  background-color: #f3f3ff;
+  color: var(--color-text-dark);
   font-family: "Inter", sans-serif;
 }
